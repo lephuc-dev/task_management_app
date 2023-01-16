@@ -4,6 +4,9 @@ import 'package:get_it/get_it.dart';
 
 class Routes {
   static String get splash => '/splash';
+  static String get onBoarding => '/onBoarding';
+  static String get signIn => '/signIn';
+  static String get signUp => '/signUp';
   static String get home => '/home';
 
   static getRoute(RouteSettings settings) {

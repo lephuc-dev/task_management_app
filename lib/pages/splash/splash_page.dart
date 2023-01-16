@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../base/base.dart';
@@ -29,19 +28,18 @@ class _SplashPageState extends BaseState<SplashPage, SplashBloc> {
   void goToNextPage() async {
     if (await bloc.getBoardViewed()) {
       Future.delayed(const Duration(seconds: 1)).then(
-            (value) => Navigator.pushNamedAndRemoveUntil(
+        (value) => Navigator.pushNamedAndRemoveUntil(
           context,
           Routes.home,
-              (route) => false,
+          (route) => false,
         ),
       );
-    }
-    else {
+    } else {
       Future.delayed(const Duration(seconds: 1)).then(
-            (value) => Navigator.pushNamedAndRemoveUntil(
+        (value) => Navigator.pushNamedAndRemoveUntil(
           context,
-          Routes.home,
-              (route) => false,
+          Routes.onBoarding,
+          (route) => false,
         ),
       );
     }
