@@ -30,7 +30,7 @@ class _SplashPageState extends BaseState<SplashPage, SplashBloc> {
       Future.delayed(const Duration(seconds: 1)).then(
         (value) => Navigator.pushNamedAndRemoveUntil(
           context,
-          Routes.home,
+          Routes.signIn,
           (route) => false,
         ),
       );
