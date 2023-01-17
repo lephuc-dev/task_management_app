@@ -7,14 +7,12 @@ class SignUpBloc extends BaseBloc<SignUpState> {
 
   SignUpBloc(this.authenticationRepository);
 
-  Stream<bool?> get isCheckingSignUpStream => stateStream.map((event) => event.isCheckingSignUp).distinct();
-
-  void onSetRegisteringState(bool value) {
-    emit(SignUpState(state: state, isCheckingSignUp: value));
-  }
-
   void onSignUp(String name, String email, String pass, Function onSuccess, Function(String) onError) {
-    authenticationRepository.signUp(name, email, pass, onSuccess, onError);
+    emitLoading(true);
+    authenticationRepository
+        .signUp(name, email, pass, onSuccess, onError)
+        .catchError((error) => emit(SignUpState(state: state, error: error.toString())))
+        .whenComplete(() => emitLoading(false));
   }
 
   @override
