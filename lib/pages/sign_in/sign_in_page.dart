@@ -39,7 +39,7 @@ class _SignInPageState extends BaseState<SignInPage, SignInBloc> {
   }
 
   void onLogInSuccess() {
-    Navigator.pushNamedAndRemoveUntil(context, Routes.home, (route) => false);
+    Navigator.pushNamedAndRemoveUntil(context, Routes.main, (route) => false);
   }
 
   void onLogInError(String error) {

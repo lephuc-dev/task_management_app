@@ -28,6 +28,10 @@ class VectorImageAssets {
   static const String ic_notification_solid = '$_pathPrefix/ic_notification_solid.svg';
   static const String ic_schedule = '$_pathPrefix/ic_schedule.svg';
   static const String ic_schedule_solid = '$_pathPrefix/ic_schedule_solid.svg';
+  static const String ic_language = '$_pathPrefix/ic_language.svg';
+  static const String ic_sun = '$_pathPrefix/ic_sun.svg';
+  static const String ic_arrow_right = '$_pathPrefix/ic_arrow_right.svg';
+  static const String ic_book = '$_pathPrefix/ic_book.svg';
 
   static const String img_on_boarding_1 = '$_pathPrefix/img_on_boarding_1.svg';
   static const String img_on_boarding_2 = '$_pathPrefix/img_on_boarding_2.svg';

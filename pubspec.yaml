@@ -66,6 +66,8 @@ dependencies:
   sticky_headers: ^0.3.0+2
   badges: ^2.0.3
   boardview: ^0.2.2
+  shimmer: ^2.0.0
+  flutter_inappwebview: ^5.7.2+3
 
 dev_dependencies:
   flutter_test:

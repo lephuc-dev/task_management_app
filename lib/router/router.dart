@@ -7,7 +7,9 @@ class Routes {
   static String get onBoarding => '/onBoarding';
   static String get signIn => '/signIn';
   static String get signUp => '/signUp';
-  static String get home => '/home';
+  static String get main => '/main';
+  static String get profileTab => '/profileTab';
+  static String get terms => '/terms';
 
   static getRoute(RouteSettings settings) {
     Widget widget;
