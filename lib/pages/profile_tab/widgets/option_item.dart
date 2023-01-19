@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../resources/resources.dart';
-import '../../widgets/widgets.dart';
+import '../../../resources/resources.dart';
+import '../../../widgets/widgets.dart';
 
 class OptionItem extends StatelessWidget {
   final String title;

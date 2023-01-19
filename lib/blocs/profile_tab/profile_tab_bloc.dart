@@ -13,6 +13,11 @@ class ProfileTabBloc extends BaseBloc<ProfileTabState> {
     return userRepository.getInformationUserByIdStream(authenticationRepository.getCurrentUserId());
   }
 
+  Future<void> signOut() async {
+    emitLoading(true);
+    await authenticationRepository.signOut().whenComplete(() => emitLoading(false));
+  }
+
   @override
   void dispose() {
     super.dispose();

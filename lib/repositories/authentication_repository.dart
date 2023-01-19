@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 class AuthenticationRepository {
   final _firebaseAuth = FirebaseAuth.instance;
@@ -48,6 +49,16 @@ class AuthenticationRepository {
       await _firebaseAuth.currentUser!.updatePassword(newPassword).then((value) => onUpdateSuccess());
     } catch (e) {
       onUpdateError(e.toString());
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      await _firebaseAuth.signOut();
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
   }
 }
