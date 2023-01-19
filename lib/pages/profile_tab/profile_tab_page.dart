@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../base/base.dart';
 import '../../blocs/blocs.dart';
 import '../../models/models.dart';
@@ -147,7 +146,7 @@ class _ProfileTabPageState extends BaseState<ProfileTabPage, ProfileTabBloc> {
               title: 'Change Password',
               icon: VectorImageAssets.ic_password,
               onTap: () {
-                ///TODO: Thêm sự kiện chuyển sang màn hình MyTasks
+                Navigator.pushNamed(context, Routes.changePassword);
               },
             ),
             Container(
