@@ -9,6 +9,7 @@ class CommonButton extends StatelessWidget {
   final BorderRadius? borderRadius;
   final EdgeInsets? padding;
   final TextStyle? textStyle;
+  final bool isEnableButton;
 
   const CommonButton({
     Key? key,
@@ -18,17 +19,25 @@ class CommonButton extends StatelessWidget {
     this.borderRadius,
     this.padding,
     this.textStyle,
+    this.isEnableButton = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWellWrapper(
       borderRadius: borderRadius ?? BorderRadius.circular(4),
-      onTap: onTap,
-      color: buttonColor ?? AppColors.mediumPersianBlue,
+      onTap: isEnableButton ? onTap : null,
+      color: isEnableButton ? buttonColor ?? AppColors.mediumPersianBlue : AppColors.neutral80,
       child: Container(
         padding: padding ?? const EdgeInsets.all(16),
-        child: Center(child: Text(content, style: textStyle ?? Theme.of(context).textTheme.button)),
+        child: Center(
+          child: Text(
+            content,
+            style: isEnableButton
+                ? textStyle ?? Theme.of(context).textTheme.button
+                : Theme.of(context).textTheme.button?.copyWith(color: AppColors.neutral60),
+          ),
+        ),
       ),
     );
   }

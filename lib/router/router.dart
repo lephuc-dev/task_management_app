@@ -11,6 +11,7 @@ class Routes {
   static String get profileTab => '/profileTab';
   static String get terms => '/terms';
   static String get privacy => '/privacy';
+  static String get changeName => '/changeName';
 
   static getRoute(RouteSettings settings) {
     Widget widget;
