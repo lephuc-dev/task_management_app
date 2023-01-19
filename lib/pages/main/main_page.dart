@@ -4,6 +4,7 @@ import 'package:task_management_app/base/base.dart';
 import 'package:task_management_app/blocs/blocs.dart';
 import 'package:task_management_app/pages/pages.dart';
 
+import '../../helpers/helpers.dart';
 import '../../resources/resources.dart';
 
 class MainPage extends StatefulWidget {
@@ -49,6 +50,12 @@ class _MainPageState extends BaseState<MainPage, MainBloc> {
     const Scaffold(),
     ProfileTabPage(bloc: widget.profileTabBloc),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    PermissionHelper().requestPermissions();
+  }
 
   @override
   Widget build(BuildContext context) {

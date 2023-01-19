@@ -33,10 +33,12 @@ dependencies:
     sdk: flutter
 
   # Firebase
-  firebase_core: ^1.24.0
-  firebase_auth: ^3.11.2
-  cloud_firestore: ^3.5.1
-  firebase_core_platform_interface: 4.5.1
+  firebase_core: ^2.4.0
+  firebase_auth: ^4.2.3
+  cloud_firestore: ^4.3.0
+  firebase_core_platform_interface: ^4.5.2
+  firebase_storage: ^11.0.9
+  firebase_crashlytics: ^3.0.8
 
   # Svg
   flutter_svg: ^1.1.6
@@ -56,8 +58,13 @@ dependencies:
   # Device preview
   device_preview: ^1.1.0
 
+  # Shares preferences
+  shared_preferences: ^2.0.15
+
+  # Permission handle
+  permission_handler: ^10.2.0
+
   cupertino_icons: ^1.0.2
-  firebase_storage: ^10.3.11
   file_picker: ^5.2.2
   image_picker: ^0.8.6
   image_cropper: ^3.0.1

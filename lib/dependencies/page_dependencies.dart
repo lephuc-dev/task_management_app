@@ -20,5 +20,6 @@ class PageDependencies {
     injector.registerFactory<Widget>(() => const PrivacyAndPolicyPage(), instanceName: Routes.privacy);
     injector.registerFactory<Widget>(() => ChangeNamePage(bloc: injector()), instanceName: Routes.changeName);
     injector.registerFactory<Widget>(() => ChangePasswordPage(bloc: injector()), instanceName: Routes.changePassword);
+    injector.registerFactory<Widget>(() => ChangeAvatarPage(bloc: injector()), instanceName: Routes.changeAvatar);
   }
 }

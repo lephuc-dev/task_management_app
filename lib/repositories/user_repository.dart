@@ -19,16 +19,19 @@ class UserRepository {
     }
   }
 
-  Future<void> changeAvatar(String fileName, String uid, String filePath, Function onUpdateSuccess, Function(String) onUpdateError) async {
+  Future<void> changeAvatar(
+    String fileName,
+    String uid,
+    String filePath,
+    Function onUpdateSuccess,
+    Function(String) onUpdateError,
+  ) async {
     File file = File(filePath);
     Reference ref = _avatarStorage.child(uid).child("post_$fileName");
-
     try {
       await ref.putFile(file);
-
-      String URL = await ref.getDownloadURL();
-
-      await _userFireStore.doc(uid).update({"avatar": URL}).then((value) => onUpdateSuccess());
+      String url = await ref.getDownloadURL();
+      await _userFireStore.doc(uid).update({"avatar": url}).then((value) => onUpdateSuccess());
     } catch (e) {
       onUpdateError(e.toString());
     }

@@ -41,8 +41,7 @@ class _ProfileTabPageState extends BaseState<ProfileTabPage, ProfileTabBloc> {
                     if (snapshot.hasData) {
                       return Row(
                         children: [
-                          CircleAvatar(
-                            radius: 30,
+                          ClipOval(
                             child: Image.network(
                               snapshot.data?.avatar ?? "",
                               height: 60,
@@ -139,7 +138,7 @@ class _ProfileTabPageState extends BaseState<ProfileTabPage, ProfileTabBloc> {
               title: 'Change avatar',
               icon: VectorImageAssets.ic_avatar,
               onTap: () {
-                ///TODO: Thêm sự kiện chuyển sang màn hình MyTasks
+                Navigator.pushNamed(context, Routes.changeAvatar);
               },
             ),
             OptionItem(
