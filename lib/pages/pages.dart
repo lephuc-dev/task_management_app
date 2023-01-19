@@ -5,3 +5,4 @@ export 'sign_up/sign_up.dart';
 export 'main/main.dart';
 export 'profile_tab/profile_tab.dart';
 export 'terms_and_conditions/terms_and_conditions.dart';
+export 'privacy_and_policy/privacy_and_policy_page.dart';

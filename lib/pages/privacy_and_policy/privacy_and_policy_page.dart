@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import '../../resources/resources.dart';
 
-class TermsAndConditionsPage extends StatefulWidget {
-  const TermsAndConditionsPage({Key? key}) : super(key: key);
+class PrivacyAndPolicyPage extends StatefulWidget {
+  const PrivacyAndPolicyPage({Key? key}) : super(key: key);
 
   @override
-  State<TermsAndConditionsPage> createState() => _TermsAndConditionsPageState();
+  State<PrivacyAndPolicyPage> createState() => _PrivacyAndPolicyPageState();
 }
 
-class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
+class _PrivacyAndPolicyPageState extends State<PrivacyAndPolicyPage> {
   double progress = 0.0;
 
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
@@ -33,10 +33,10 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         title: Text(
-          "Terms & Conditions",
+          "Privacy & Policy",
           style: Theme.of(context).textTheme.headline5?.copyWith(
-                fontSize: 19,
-              ),
+            fontSize: 19,
+          ),
         ),
         centerTitle: true,
         iconTheme: const IconThemeData(color: AppColors.primaryBlack),
@@ -45,7 +45,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
         children: [
           InAppWebView(
             initialUrlRequest: URLRequest(
-              url: Uri.parse("https://sites.google.com/gm.uit.edu.vn/terms-conditions/home"),
+              url: Uri.parse("https://sites.google.com/gm.uit.edu.vn/privacy-policy-taskez/home"),
             ),
             initialOptions: options,
             onWebViewCreated: (controller) {},
@@ -74,9 +74,9 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
           ),
           progress < 1.0
               ? LinearProgressIndicator(
-                  value: progress,
-                  color: AppColors.mediumPersianBlue,
-                )
+            value: progress,
+            color: AppColors.mediumPersianBlue,
+          )
               : const SizedBox.shrink(),
         ],
       ),

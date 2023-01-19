@@ -1,0 +1,1 @@
+export 'privacy_and_policy_page.dart';

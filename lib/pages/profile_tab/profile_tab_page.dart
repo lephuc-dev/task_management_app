@@ -150,7 +150,7 @@ class _ProfileTabPageState extends BaseState<ProfileTabPage, ProfileTabBloc> {
               title: 'Privacy & Policy',
               icon: VectorImageAssets.ic_password,
               onTap: () {
-                ///TODO: Thêm sự kiện chuyển sang màn hình MyTasks
+                Navigator.pushNamed(context, Routes.privacy);
               },
             ),
             OptionItem(
