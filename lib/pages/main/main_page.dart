@@ -9,10 +9,12 @@ import '../../resources/resources.dart';
 
 class MainPage extends StatefulWidget {
   final MainBloc bloc;
+  final HomeTabBloc homeTabBloc;
   final ProfileTabBloc profileTabBloc;
   const MainPage({
     Key? key,
     required this.bloc,
+    required this.homeTabBloc,
     required this.profileTabBloc,
   }) : super(key: key);
 
@@ -45,7 +47,7 @@ class _MainPageState extends BaseState<MainPage, MainBloc> {
   ];
 
   late List<Widget> tabScreens = [
-    const Scaffold(),
+    HomeTabPage(bloc: widget.homeTabBloc),
     const Scaffold(),
     const Scaffold(),
     ProfileTabPage(bloc: widget.profileTabBloc),

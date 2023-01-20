@@ -9,3 +9,4 @@ export 'privacy_and_policy/privacy_and_policy_page.dart';
 export 'change_name/change_name.dart';
 export 'change_password/change_password.dart';
 export 'change_avatar/change_avatar.dart';
+export 'home_tab/home_tab_page.dart';

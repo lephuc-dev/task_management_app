@@ -12,6 +12,7 @@ class PageDependencies {
     injector.registerFactory<Widget>(
         () => MainPage(
               bloc: injector(),
+              homeTabBloc: injector(),
               profileTabBloc: injector(),
             ),
         instanceName: Routes.main);
@@ -21,5 +22,6 @@ class PageDependencies {
     injector.registerFactory<Widget>(() => ChangeNamePage(bloc: injector()), instanceName: Routes.changeName);
     injector.registerFactory<Widget>(() => ChangePasswordPage(bloc: injector()), instanceName: Routes.changePassword);
     injector.registerFactory<Widget>(() => ChangeAvatarPage(bloc: injector()), instanceName: Routes.changeAvatar);
+    injector.registerFactory<Widget>(() => HomeTabPage(bloc: injector()), instanceName: Routes.homeTab);
   }
 }

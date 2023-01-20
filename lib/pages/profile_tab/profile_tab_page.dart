@@ -22,11 +22,12 @@ class _ProfileTabPageState extends BaseState<ProfileTabPage, ProfileTabBloc> {
       backgroundColor: AppColors.primaryWhite,
       appBar: AppBar(
         elevation: 0,
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.primaryWhite,
         centerTitle: true,
         title: Text(
           "Profile",
-          style: Theme.of(context).textTheme.headline5?.copyWith(fontSize: 19),
+          style: Theme.of(context).textTheme.headline5?.copyWith(fontSize: 20),
         ),
       ),
       body: SingleChildScrollView(
