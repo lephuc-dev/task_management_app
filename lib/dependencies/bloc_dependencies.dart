@@ -13,5 +13,6 @@ class BlocDependencies {
     injector.registerFactory<ChangePasswordBloc>(() => ChangePasswordBloc(injector(), injector()));
     injector.registerFactory<ChangeAvatarBloc>(() => ChangeAvatarBloc(injector(), injector()));
     injector.registerFactory<HomeTabBloc>(() => HomeTabBloc(injector(), injector(), injector(), injector()));
+    injector.registerFactory<ProjectBloc>(() => ProjectBloc(injector(), injector(), injector()));
   }
 }

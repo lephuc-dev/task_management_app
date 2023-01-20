@@ -13,7 +13,7 @@ class FavoriteProjectItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWellWrapper(
-      onTap: () => Navigator.pushNamed(context, Routes.homeTab, arguments: {"project": project}),
+      onTap: () => Navigator.pushNamed(context, Routes.project, arguments: project),
       child: Stack(
         children: [
           project.image == ""

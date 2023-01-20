@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:task_management_app/widgets/loading_container.dart';
+import '../../widgets/loading_container.dart';
 import '../../base/base.dart';
 import '../../blocs/blocs.dart';
 import '../../models/models.dart';

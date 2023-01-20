@@ -15,6 +15,7 @@ class Routes {
   static String get changePassword => '/changePassword';
   static String get changeAvatar => '/changeAvatar';
   static String get homeTab => '/homeTab';
+  static String get project => '/project';
 
   static getRoute(RouteSettings settings) {
     Widget widget;
