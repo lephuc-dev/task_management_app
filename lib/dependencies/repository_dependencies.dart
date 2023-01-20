@@ -5,5 +5,7 @@ class RepositoryDependencies {
   static Future setup(GetIt injector) async {
     injector.registerFactory<AuthenticationRepository>(() => AuthenticationRepository());
     injector.registerFactory<UserRepository>(() => UserRepository());
+    injector.registerFactory<ProjectParticipantRepository>(() => ProjectParticipantRepository());
+    injector.registerFactory<ProjectRepository>(() => ProjectRepository());
   }
 }
