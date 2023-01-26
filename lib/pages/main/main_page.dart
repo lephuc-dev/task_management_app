@@ -11,11 +11,15 @@ class MainPage extends StatefulWidget {
   final MainBloc bloc;
   final HomeTabBloc homeTabBloc;
   final ProfileTabBloc profileTabBloc;
+  final ScheduleTabBloc scheduleTabBloc;
+  final NotificationTabBloc notificationTabBloc;
   const MainPage({
     Key? key,
     required this.bloc,
     required this.homeTabBloc,
     required this.profileTabBloc,
+    required this.scheduleTabBloc,
+    required this.notificationTabBloc,
   }) : super(key: key);
 
   @override
@@ -48,8 +52,8 @@ class _MainPageState extends BaseState<MainPage, MainBloc> {
 
   late List<Widget> tabScreens = [
     HomeTabPage(bloc: widget.homeTabBloc),
-    const Scaffold(),
-    const Scaffold(),
+    ScheduleTabPage(bloc: widget.scheduleTabBloc),
+    NotificationTabPage(bloc: widget.notificationTabBloc),
     ProfileTabPage(bloc: widget.profileTabBloc),
   ];
 

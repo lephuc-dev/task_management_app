@@ -14,6 +14,8 @@ class PageDependencies {
               bloc: injector(),
               homeTabBloc: injector(),
               profileTabBloc: injector(),
+              scheduleTabBloc: injector(),
+              notificationTabBloc: injector(),
             ),
         instanceName: Routes.main);
     injector.registerFactory<Widget>(() => ProfileTabPage(bloc: injector()), instanceName: Routes.profileTab);
@@ -24,5 +26,8 @@ class PageDependencies {
     injector.registerFactory<Widget>(() => ChangeAvatarPage(bloc: injector()), instanceName: Routes.changeAvatar);
     injector.registerFactory<Widget>(() => HomeTabPage(bloc: injector()), instanceName: Routes.homeTab);
     injector.registerFactory<Widget>(() => ProjectPage(bloc: injector()), instanceName: Routes.project);
+    injector.registerFactory<Widget>(() => ScheduleTabPage(bloc: injector()), instanceName: Routes.scheduleTab);
+    injector.registerFactory<Widget>(() => NotificationTabPage(bloc: injector()), instanceName: Routes.notificationTab);
+    injector.registerFactory<Widget>(() => TaskPage(bloc: injector()), instanceName: Routes.task);
   }
 }

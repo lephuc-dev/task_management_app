@@ -36,6 +36,7 @@ class VectorImageAssets {
   static const String ic_edit_name = '$_pathPrefix/ic_edit_name.svg';
   static const String ic_crop = '$_pathPrefix/ic_crop.svg';
   static const String ic_add = '$_pathPrefix/ic_add.svg';
+  static const String ic_more = '$_pathPrefix/ic_more.svg';
 
   static const String img_on_boarding_1 = '$_pathPrefix/img_on_boarding_1.svg';
   static const String img_on_boarding_2 = '$_pathPrefix/img_on_boarding_2.svg';

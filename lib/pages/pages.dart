@@ -11,3 +11,6 @@ export 'change_password/change_password.dart';
 export 'change_avatar/change_avatar.dart';
 export 'home_tab/home_tab_page.dart';
 export 'project/project.dart';
+export 'schedule_tab/schedule_tab.dart';
+export 'notification_tab/notification_tab.dart';
+export 'task/task.dart';
