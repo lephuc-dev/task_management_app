@@ -50,7 +50,7 @@ class _ProfileTabPageState extends BaseState<ProfileTabPage, ProfileTabBloc> {
                               fit: BoxFit.cover,
                               loadingBuilder: (context, child, event) {
                                 if (event == null) return child;
-                                return const LoadingContainer(height: 74, width: 74);
+                                return const LoadingContainer(height: 60, width: 60);
                               },
                               errorBuilder: (context, object, stacktrace) {
                                 return AvatarWithName(
