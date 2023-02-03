@@ -9,5 +9,6 @@ class RepositoryDependencies {
     injector.registerFactory<ProjectRepository>(() => ProjectRepository());
     injector.registerFactory<BoardRepository>(() => BoardRepository());
     injector.registerFactory<TaskRepository>(() => TaskRepository());
+    injector.registerFactory<TaskParticipantRepository>(() => TaskParticipantRepository());
   }
 }

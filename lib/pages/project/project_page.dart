@@ -128,7 +128,7 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                                       (indexListTask) => SizedBox(
                                                             width: MediaQuery.of(context).size.width,
                                                             child: InkWellWrapper(
-                                                              onTap: () => Navigator.pushNamed(context, Routes.task, arguments: listTaskSnapshot.data![index]),
+                                                              onTap: () => Navigator.pushNamed(context, Routes.task, arguments: listTaskSnapshot.data![indexListTask]),
                                                               margin: const EdgeInsets.only(bottom: 8),
                                                               paddingChild: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                                                               borderRadius: BorderRadius.circular(4),

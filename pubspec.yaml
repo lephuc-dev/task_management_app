@@ -34,7 +34,7 @@ dependencies:
 
   # Firebase
   firebase_core: ^2.4.0
-  firebase_auth: ^4.2.3
+  firebase_auth: ^4.2.5
   cloud_firestore: ^4.3.0
   firebase_core_platform_interface: ^4.5.2
   firebase_storage: ^11.0.9
@@ -55,9 +55,6 @@ dependencies:
   # Flutter spinkit
   flutter_spinkit: ^5.1.0
 
-  # Device preview
-  device_preview: ^1.1.0
-
   # Shares preferences
   shared_preferences: ^2.0.15
 
@@ -77,6 +74,13 @@ dependencies:
   flutter_inappwebview: ^5.7.2+3
 
   syncfusion_flutter_calendar: ^20.4.44
+  table_calendar: ^3.0.8
+
+  any_link_preview: ^3.0.0
+  flutter_link_previewer: ^3.2.0
+  link_preview_generator: ^1.2.0
+
+  flutter_slidable: ^2.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../base/base.dart';
 import '../../blocs/blocs.dart';
+import '../../models/task_model.dart';
 import '../../resources/resources.dart';
 
 class ScheduleTabPage extends StatefulWidget {
@@ -25,7 +27,14 @@ class _ScheduleTabPageState extends BaseState<ScheduleTabPage, ScheduleTabBloc> 
         backgroundColor: AppColors.primaryWhite,
         elevation: 0.5,
         iconTheme: const IconThemeData(color: AppColors.primaryBlack),
-
+      ),
+      body: SfCalendar(
+        view: CalendarView.month,
+        todayHighlightColor: AppColors.mediumPersianBlue,
+        monthViewSettings: const MonthViewSettings(
+          appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
+          showAgenda: true,
+        ), 
       ),
     );
   }
