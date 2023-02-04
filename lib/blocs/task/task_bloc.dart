@@ -8,13 +8,21 @@ class TaskBloc extends BaseBloc<TaskState> {
   final TaskParticipantRepository taskParticipantRepository;
   final ProjectParticipantRepository projectParticipantRepository;
   final UserRepository userRepository;
+  final CommentRepository commentRepository;
+  final AuthenticationRepository authenticationRepository;
 
   TaskBloc(
     this.taskRepository,
     this.userRepository,
     this.taskParticipantRepository,
     this.projectParticipantRepository,
+    this.commentRepository,
+    this.authenticationRepository,
   );
+
+  Stream<List<CommentModel>> getListCommentByTaskId(String taskId) {
+    return commentRepository.getListCommentByTaskId(taskId);
+  }
 
   Stream<TaskModel> getTaskStream(String taskId) {
     return taskRepository.getTaskStream(taskId);
@@ -138,6 +146,14 @@ class TaskBloc extends BaseBloc<TaskState> {
       title: title,
       url: url,
     );
+  }
+
+  void createComment({required String taskId, required String content}) {
+    commentRepository.createComment(authenticationRepository.getCurrentUserId(), taskId, content);
+  }
+
+  void deleteComment({required String commentId}) {
+    commentRepository.deleteComment(commentId: commentId);
   }
 
   @override

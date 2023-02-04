@@ -20,6 +20,7 @@ class TaskPage extends StatefulWidget {
 
 class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
   bool isInit = false;
+  bool isEnableCommentButton = false;
   late TaskModel taskModel;
 
   TextEditingController nameController = TextEditingController();
@@ -27,6 +28,7 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
   TextEditingController checkListItemContentController = TextEditingController();
   TextEditingController linkTitleController = TextEditingController();
   TextEditingController linkUrlController = TextEditingController();
+  TextEditingController commentController = TextEditingController();
 
   final _nameFormKey = GlobalKey<FormState>();
   final _descriptionFormKey = GlobalKey<FormState>();
@@ -50,6 +52,7 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
     checkListItemContentController.dispose();
     linkTitleController.dispose();
     linkUrlController.dispose();
+    commentController.dispose();
     super.dispose();
   }
 
@@ -526,7 +529,7 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
                           color: AppColors.neutral99,
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
                           child: Text(
                             "Comments",
                             style: Theme.of(context).textTheme.headline4?.copyWith(
@@ -534,9 +537,108 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
                                 ),
                           ),
                         ),
+                        StreamBuilder<List<CommentModel>>(
+                            stream: bloc.getListCommentByTaskId(taskModel.id ?? ""),
+                            builder: (context, commentSnapshot) {
+                              if (snapshot.hasData) {
+                                return Column(
+                                  children: List.generate(
+                                    commentSnapshot.data?.length ?? 0,
+                                    (index) => StreamBuilder<User>(
+                                        stream: bloc.getInformationUserByIdStream(commentSnapshot.data![index].userId ?? ""),
+                                        builder: (context, userSnapshot) {
+                                          return Slidable(
+                                            endActionPane: ActionPane(
+                                              motion: const ScrollMotion(),
+                                              children: [
+                                                SlidableAction(
+                                                  onPressed: (context) {
+                                                    bloc.deleteComment(commentId: commentSnapshot.data![index].id ?? "");
+                                                  },
+                                                  backgroundColor: AppColors.red60,
+                                                  foregroundColor: Colors.white,
+                                                  icon: Icons.delete,
+                                                ),
+                                              ],
+                                            ),
+                                            child: Container(
+                                              padding: const EdgeInsets.only(bottom: 16, top: 16),
+                                              margin: const EdgeInsets.only(left: 16, right: 16),
+                                              decoration: const BoxDecoration(
+                                                border: Border(bottom: BorderSide(width: 1, color: AppColors.neutral99))
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      ClipOval(
+                                                        child: Image.network(
+                                                          userSnapshot.data?.avatar ?? "",
+                                                          height: 45,
+                                                          width: 45,
+                                                          fit: BoxFit.cover,
+                                                          loadingBuilder: (context, child, event) {
+                                                            if (event == null) return child;
+                                                            return const LoadingContainer(height: 45, width: 45);
+                                                          },
+                                                          errorBuilder: (context, object, stacktrace) {
+                                                            return AvatarWithName(
+                                                              name: userSnapshot.data?.name ?? "?",
+                                                              fontSize: 12,
+                                                              shapeSize: 45,
+                                                              count: 2,
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 20),
+                                                      Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Text(
+                                                            userSnapshot.data?.name ?? "",
+                                                            style: Theme.of(context).textTheme.headline5,
+                                                          ),
+                                                          const SizedBox(height: 4),
+                                                          Text(
+                                                            commentSnapshot.data?[index].date ?? "",
+                                                            style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                                                  fontSize: 12,
+                                                                  color: AppColors.neutral60,
+                                                                  fontWeight: FontWeight.w400,
+                                                                ),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 8),
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(left: 65),
+                                                    child: Text(
+                                                      commentSnapshot.data?[index].content ?? "",
+                                                      style: Theme.of(context).textTheme.headline5?.copyWith(
+                                                            color: AppColors.neutral30,
+                                                            height: 1.3,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            }),
 
                         /// Container bottom
-                        const SizedBox(height: 200),
+                        const SizedBox(height: 100),
                       ],
                     ),
                   ),
@@ -548,16 +650,56 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
                       child: Row(
                         children: [
                           Expanded(
-                            child: TextFormField(
-                              decoration: const InputDecoration(hintText: "Comment here"),
+                            child: CustomTextField(
+                              textFieldType: TextFieldType.text,
+                              textFieldConfig: TextFieldConfig(
+                                controller: commentController,
+                                style: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral10),
+                                cursorColor: AppColors.primaryBlack,
+                              ),
+                              decorationConfig: TextFieldDecorationConfig(
+                                hintText: "Comment here",
+                                hintStyle: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral60),
+                                errorStyle: Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.w300, fontSize: 13, color: AppColors.red60),
+                                enabledBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: AppColors.neutral95, width: 1),
+                                ),
+                                focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: AppColors.mediumPersianBlue, width: 1),
+                                ),
+                                errorBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: AppColors.red60, width: 1),
+                                ),
+                                focusedErrorBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: AppColors.red60, width: 1),
+                                ),
+                              ),
+                              onChanged: (value) {
+                                if (value == "") {
+                                  setState(() {
+                                    isEnableCommentButton = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    isEnableCommentButton = true;
+                                  });
+                                }
+                              },
                             ),
                           ),
                           const SizedBox(width: 16),
                           InkWellWrapper(
-                            onTap: () {},
+                            onTap: isEnableCommentButton ? (){
+                              primaryFocus?.unfocus();
+                              bloc.createComment(taskId: taskModel.id ?? "", content: commentController.text.trim());
+                              commentController.clear();
+                              setState(() {
+                                isEnableCommentButton = false;
+                              });
+                            } : null,
                             borderRadius: BorderRadius.circular(4),
                             paddingChild: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            color: AppColors.mediumPersianBlue,
+                            color: isEnableCommentButton ? AppColors.mediumPersianBlue : AppColors.neutral50,
                             child: SvgPicture.asset(
                               VectorImageAssets.ic_arrow_right,
                               height: 24,
@@ -1032,7 +1174,8 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
                       decorationConfig: TextFieldDecorationConfig(
                         hintText: "Enter link title",
                         hintStyle: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral60),
-                        errorStyle: Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.w300, fontSize: 13, color: AppColors.red60),
+                        errorStyle:
+                            Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.w300, fontSize: 13, color: AppColors.red60),
                         enabledBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: AppColors.neutral95, width: 1),
                         ),
@@ -1064,7 +1207,8 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
                       decorationConfig: TextFieldDecorationConfig(
                         hintText: "Enter link urk",
                         hintStyle: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral60),
-                        errorStyle: Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.w300, fontSize: 13, color: AppColors.red60),
+                        errorStyle:
+                            Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.w300, fontSize: 13, color: AppColors.red60),
                         enabledBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: AppColors.neutral95, width: 1),
                         ),
