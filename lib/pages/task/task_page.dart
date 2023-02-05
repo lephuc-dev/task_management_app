@@ -1,9 +1,8 @@
-import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_link_previewer/flutter_link_previewer.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:link_preview_generator/link_preview_generator.dart';
+import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import '../../models/models.dart';
 import '../../base/base.dart';
 import '../../blocs/blocs.dart';
@@ -59,6 +58,7 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
   @override
   Widget build(BuildContext context) {
     init();
+    ///  Test
     return UnFocusedWidget(
       child: StreamBuilder<TaskModel>(
           stream: bloc.getTaskStream(taskModel.id ?? ""),
@@ -245,7 +245,42 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
                           color: AppColors.neutral99,
                         ),
                         InkWellWrapper(
-                          onTap: () {},
+                          onTap: () async {
+                            List<DateTime>? dateTimeList = await showOmniDateTimeRangePicker(
+                              context: context,
+                              type: OmniDateTimePickerType.dateAndTime,
+                              primaryColor: Colors.cyan,
+                              backgroundColor: Colors.grey[900],
+                              calendarTextColor: Colors.white,
+                              tabTextColor: Colors.white,
+                              unselectedTabBackgroundColor: Colors.grey[700],
+                              buttonTextColor: Colors.white,
+                              timeSpinnerTextStyle: const TextStyle(color: Colors.white70, fontSize: 18),
+                              timeSpinnerHighlightedTextStyle: const TextStyle(color: Colors.white, fontSize: 24),
+                              is24HourMode: false,
+                              isShowSeconds: false,
+                              startInitialDate: snapshot.data!.from,
+                              startFirstDate: DateTime(1600).subtract(const Duration(days: 3652)),
+                              startLastDate: DateTime.now().add(
+                                const Duration(days: 3652),
+                              ),
+                              endInitialDate: DateTime.now(),
+                              endFirstDate: DateTime(1600).subtract(const Duration(days: 3652)),
+                              endLastDate: DateTime.now().add(
+                                const Duration(days: 3652),
+                              ),
+                              borderRadius: const Radius.circular(16),
+                            );
+                            if (dateTimeList != null) {
+                              bloc.updateFromAndToTime(
+                                taskId: taskModel.id ?? "",
+                                from: dateTimeList[0],
+                                to: dateTimeList[1],
+                              );
+                            }
+                            print("Datetime 0 ::: ${dateTimeList?[0].day}/${dateTimeList?[0].month}");
+                            print("Datetime 1 ::: ${dateTimeList?[1].day}/${dateTimeList?[1].month}");
+                          },
                           paddingChild: const EdgeInsets.all(16),
                           width: MediaQuery.of(context).size.width,
                           child: Column(
@@ -564,9 +599,8 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
                                             child: Container(
                                               padding: const EdgeInsets.only(bottom: 16, top: 16),
                                               margin: const EdgeInsets.only(left: 16, right: 16),
-                                              decoration: const BoxDecoration(
-                                                border: Border(bottom: BorderSide(width: 1, color: AppColors.neutral99))
-                                              ),
+                                              decoration:
+                                                  const BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: AppColors.neutral99))),
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
@@ -660,7 +694,10 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
                               decorationConfig: TextFieldDecorationConfig(
                                 hintText: "Comment here",
                                 hintStyle: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral60),
-                                errorStyle: Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.w300, fontSize: 13, color: AppColors.red60),
+                                errorStyle: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2
+                                    ?.copyWith(fontWeight: FontWeight.w300, fontSize: 13, color: AppColors.red60),
                                 enabledBorder: const UnderlineInputBorder(
                                   borderSide: BorderSide(color: AppColors.neutral95, width: 1),
                                 ),
@@ -689,14 +726,16 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
                           ),
                           const SizedBox(width: 16),
                           InkWellWrapper(
-                            onTap: isEnableCommentButton ? (){
-                              primaryFocus?.unfocus();
-                              bloc.createComment(taskId: taskModel.id ?? "", content: commentController.text.trim());
-                              commentController.clear();
-                              setState(() {
-                                isEnableCommentButton = false;
-                              });
-                            } : null,
+                            onTap: isEnableCommentButton
+                                ? () {
+                                    primaryFocus?.unfocus();
+                                    bloc.createComment(taskId: taskModel.id ?? "", content: commentController.text.trim());
+                                    commentController.clear();
+                                    setState(() {
+                                      isEnableCommentButton = false;
+                                    });
+                                  }
+                                : null,
                             borderRadius: BorderRadius.circular(4),
                             paddingChild: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             color: isEnableCommentButton ? AppColors.mediumPersianBlue : AppColors.neutral50,

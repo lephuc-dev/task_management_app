@@ -156,6 +156,10 @@ class TaskBloc extends BaseBloc<TaskState> {
     commentRepository.deleteComment(commentId: commentId);
   }
 
+  void updateFromAndToTime({required String taskId, required DateTime from, required DateTime to}) {
+    taskRepository.updateFromAndToTime(taskId: taskId, from: from, to: to);
+  }
+
   @override
   void dispose() {
     super.dispose();

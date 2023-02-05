@@ -147,6 +147,15 @@ class TaskRepository {
     }
   }
 
+  void updateFromAndToTime({required String taskId, required DateTime from, required DateTime to}) {
+    int fromTime = from.millisecondsSinceEpoch;
+    int toTime = to.millisecondsSinceEpoch;
+    _taskFireStore.doc(taskId).update({
+      "from": fromTime,
+      "to": toTime,
+    });
+  }
+
   // Stream<QuerySnapshot<dynamic>> getListTaskCardByProjectidStream(
   //     String project_id) {
   //   return _taskFireStore

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'models.dart';
 
 class TaskModel {
@@ -9,6 +11,9 @@ class TaskModel {
   String? description;
   List<LinkModel>? links;
   List<CheckListItemModel>? checklist;
+  DateTime? from;
+  DateTime? to;
+  bool? completed;
 
   TaskModel({
     this.id,
@@ -19,6 +24,9 @@ class TaskModel {
     this.description,
     this.links,
     this.checklist,
+    this.from,
+    this.to,
+    this.completed,
   });
 
   TaskModel.fromJson(Map<String, dynamic> json) {
@@ -40,6 +48,13 @@ class TaskModel {
         checklist!.add(CheckListItemModel.fromJson(v));
       });
     }
+    if (json['from'] != null) {
+      from = DateTime.fromMillisecondsSinceEpoch(json['from']);
+    }
+    if (json['to'] != null) {
+      to = DateTime.fromMillisecondsSinceEpoch(json['to']);
+    }
+    completed = json['completed'];
   }
 
   Map<String, dynamic> toJson() {
@@ -56,6 +71,13 @@ class TaskModel {
     if (checklist != null) {
       data['checklist'] = checklist!.map((v) => v.toJson()).toList();
     }
+    if (from != null) {
+      data['from'] = from!.millisecondsSinceEpoch;
+    }
+    if (to != null) {
+      data['to'] = to!.millisecondsSinceEpoch;
+    }
+    data['completed'] = completed;
     return data;
   }
 }
