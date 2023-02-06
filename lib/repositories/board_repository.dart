@@ -5,7 +5,7 @@ import '../models/models.dart';
 class BoardRepository {
   final _boardFireStore = FirebaseFirestore.instance.collection("BOARDS");
 
-  void createBoard(String projectId, String name, int index) {
+  void createBoard({required String projectId, required String name, required int index}) {
     String id = DateTime.now().microsecondsSinceEpoch.toString();
     _boardFireStore
         .doc(id)
@@ -27,6 +27,12 @@ class BoardRepository {
         })
         .then((value) => debugPrint("completed ${index.toString()}"))
         .catchError((error) => debugPrint("fail"));
+  }
+
+  void updateBoardName({required String id, required String name}) {
+    _boardFireStore.doc(id).update({
+      "name": name,
+    });
   }
 
   Stream<List<BoardModel>> getListBoardOrderByIndexStream(String projectId) {

@@ -4,6 +4,17 @@ import '../models/models.dart';
 class TaskRepository {
   final _taskFireStore = FirebaseFirestore.instance.collection("TASKS");
 
+  void createTask({required String name, required String boardId, required String projectId, required int index}) {
+    String id = DateTime.now().millisecondsSinceEpoch.toString();
+    _taskFireStore.doc(id).set({
+      "id": id,
+      "project_id": projectId,
+      "board_id": boardId,
+      "name": name,
+      "completed": false,
+    });
+  }
+
   Stream<List<TaskModel>> getListTaskOrderByIndexStream(String projectId) {
     return _taskFireStore
         .where("board_id", isEqualTo: projectId)

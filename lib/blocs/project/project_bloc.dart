@@ -42,20 +42,19 @@ class ProjectBloc extends BaseBloc<ProjectState> {
     return userRepository.getInformationUserByIdStream(uid);
   }
 
-  // Stream<QuerySnapshot<dynamic>> getListTaskCardByProjectidStream(
-  //     String project_id) {
-  //   return taskRepository.getListTaskCardByProjectidStream(project_id);
-  // }
+  void createTask({required String name, required String boardId, required String projectId, required int index}) {
+    taskRepository.createTask(name: name, boardId: boardId, projectId: projectId, index: index);
+  }
 
-  // Stream<QuerySnapshot<dynamic>> getListListTaskByProjectTdStream(String projectId) {
-  //   return groupTaskRepository.getListListTaskByProjectidStream(projectId);
-  // }
+  void updateBoardName({required String id, required String name}) {
+    boardRepository.updateBoardName(id: id, name: name);
+  }
 
-  // Stream<List<ProjectParticipant>> getListProjectParticipantByProjectIdStream(String projectId) {
-  //   return participantRepository.getListProjectParticipantByProjectIdStream(projectId);
-  // }
-  //
-  // Future<void> AddNewListState(String projectId, String name, int index) {
-  //   return groupTaskRepository.AddNewListState(projectId, name, index);
-  // }
+  void updateProjectName({required String projectId, required String name}) {
+    projectRepository.updateName(projectId: projectId, name: name);
+  }
+
+  void updateProjectDescription({required String projectId, required String description}) {
+    projectRepository.updateDescription(projectId: projectId, description: description);
+  }
 }
