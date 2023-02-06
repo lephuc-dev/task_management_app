@@ -40,6 +40,7 @@ class VectorImageAssets {
   static const String ic_close = '$_pathPrefix/ic_close.svg';
   static const String ic_delete = '$_pathPrefix/ic_delete.svg';
   static const String ic_warning = '$_pathPrefix/ic_warning.svg';
+  static const String ic_edit = '$_pathPrefix/ic_edit.svg';
 
   static const String img_on_boarding_1 = '$_pathPrefix/img_on_boarding_1.svg';
   static const String img_on_boarding_2 = '$_pathPrefix/img_on_boarding_2.svg';

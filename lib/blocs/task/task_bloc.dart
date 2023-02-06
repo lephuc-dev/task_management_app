@@ -160,6 +160,18 @@ class TaskBloc extends BaseBloc<TaskState> {
     taskRepository.updateFromAndToTime(taskId: taskId, from: from, to: to);
   }
 
+  Stream<String> getRole({required String projectId}) {
+    return projectParticipantRepository.getRole(userId: authenticationRepository.getCurrentUserId(), projectId: projectId);
+  }
+
+  void updateCompletedState({required String taskId, required bool value}) {
+    taskRepository.updateCompletedState(taskId: taskId, value: value);
+  }
+
+  String getUid() {
+    return authenticationRepository.getCurrentUserId();
+  }
+
   @override
   void dispose() {
     super.dispose();

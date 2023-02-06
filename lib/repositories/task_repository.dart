@@ -48,6 +48,12 @@ class TaskRepository {
     }
   }
 
+  void updateCompletedState({required String taskId, required bool value}) {
+    _taskFireStore.doc(taskId).update({
+      "completed": value,
+    });
+  }
+
   void updateCheckListItemContent({
     required String taskId,
     required List<CheckListItemModel>? checklist,

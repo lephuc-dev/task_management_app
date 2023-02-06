@@ -25,4 +25,12 @@ class ProjectParticipantRepository {
         .snapshots()
         .map((snapshot) => snapshot.docs.map((document) => ProjectParticipant.fromJson(document.data())).toList());
   }
+
+  Stream<String> getRole({required String userId, required String projectId}) {
+    return _projectParticipantFirestore
+        .where("user_id", isEqualTo: userId)
+        .where("project_id", isEqualTo: projectId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs[0]['role']);
+  }
 }
