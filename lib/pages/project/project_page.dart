@@ -53,66 +53,81 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
     return StreamBuilder<Project>(
         stream: bloc.getProjectStream(project.id ?? ""),
         builder: (context, snapshot) {
-          return Scaffold(
-            appBar: AppBar(
-              elevation: 0,
-              backgroundColor: AppColors.mediumPersianBlue,
-              title: Text(
-                snapshot.data?.name ?? "",
-                style: Theme.of(context).textTheme.headline4?.copyWith(color: AppColors.primaryWhite),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      constraints: BoxConstraints(
-                        maxHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
-                      ),
-                      backgroundColor: AppColors.primaryWhite,
-                      builder: (context) {
-                        return _boardInformationBottomSheet(snapshot.data);
-                      },
-                    );
-                  },
-                  icon: SvgPicture.asset(
-                    VectorImageAssets.ic_more,
-                    height: 24,
-                    width: 24,
-                    fit: BoxFit.cover,
-                    color: AppColors.primaryWhite,
+          return StreamBuilder<List<BoardModel>>(
+              stream: bloc.getListBoardOrderByIndexStream(project.id ?? ""),
+              builder: (context, boardSnapshot) {
+                return Scaffold(
+                  appBar: AppBar(
+                    elevation: 0,
+                    backgroundColor: AppColors.mediumPersianBlue,
+                    title: Text(
+                      snapshot.data?.name ?? "",
+                      style: Theme.of(context).textTheme.headline4?.copyWith(color: AppColors.primaryWhite),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    actions: [
+                      IconButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            constraints: BoxConstraints(
+                              maxHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
+                            ),
+                            backgroundColor: AppColors.primaryWhite,
+                            builder: (context) {
+                              return _boardInformationBottomSheet(snapshot.data);
+                            },
+                          );
+                        },
+                        icon: SvgPicture.asset(
+                          VectorImageAssets.ic_more,
+                          height: 24,
+                          width: 24,
+                          fit: BoxFit.cover,
+                          color: AppColors.primaryWhite,
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
-            ),
-            body: StreamBuilder<List<BoardModel>>(
-                stream: bloc.getListBoardOrderByIndexStream(project.id ?? ""),
-                builder: (context, boardSnapshot) {
-                  if (boardSnapshot.hasData) {
-                    return Column(
-                      children: [
-                        Expanded(
-                          child: ListView.separated(
-                            padding: const EdgeInsets.all(8),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: boardSnapshot.data!.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                width: MediaQuery.of(context).size.width * 0.7,
-                                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                                decoration: const BoxDecoration(
-                                  color: AppColors.neutral95,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
+                  floatingActionButton: FloatingActionButton(
+                    onPressed: () {
+                      boardNameController.clear();
+                      showAddBoardDialog(projectId: project.id ?? "", index: boardSnapshot.data?.length ?? 0);
+                    },
+                    backgroundColor: AppColors.green60,
+                    child: SvgPicture.asset(
+                      VectorImageAssets.ic_add,
+                      height: 24,
+                      width: 24,
+                      color: AppColors.primaryWhite,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  body: boardSnapshot.hasData
+                      ? SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                        child: ListView.separated(
+                          padding: const EdgeInsets.all(8),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: boardSnapshot.data!.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              decoration: const BoxDecoration(
+                                color: AppColors.neutral95,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 8.0),
                                           child: Text(
                                             boardSnapshot.data![index].name ?? "",
                                             style: Theme.of(context).textTheme.headline4,
@@ -120,65 +135,72 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
-                                        PopupMenuButton<int>(
-                                          itemBuilder: (context) => [
-                                            PopupMenuItem(
-                                              value: 1,
-                                              child: Row(
-                                                children: [
-                                                  SvgPicture.asset(VectorImageAssets.ic_add),
-                                                  const SizedBox(width: 10),
-                                                  Text(
-                                                    "Create task",
-                                                    style: Theme.of(context).textTheme.headline5,
-                                                  )
-                                                ],
-                                              ),
+                                      ),
+                                      PopupMenuButton(
+                                        itemBuilder: (context) => [
+                                          PopupMenuItem(
+                                            value: 1,
+                                            child: Row(
+                                              children: [
+                                                SvgPicture.asset(VectorImageAssets.ic_add),
+                                                const SizedBox(width: 10),
+                                                Text(
+                                                  "Create task",
+                                                  style: Theme.of(context).textTheme.headline5,
+                                                )
+                                              ],
                                             ),
-                                            PopupMenuItem(
-                                              value: 2,
-                                              child: Row(
-                                                children: [
-                                                  SvgPicture.asset(VectorImageAssets.ic_edit),
-                                                  const SizedBox(width: 10),
-                                                  Text(
-                                                    "Board name",
-                                                    style: Theme.of(context).textTheme.headline5,
-                                                  )
-                                                ],
-                                              ),
+                                          ),
+                                          PopupMenuItem(
+                                            value: 2,
+                                            child: Row(
+                                              children: [
+                                                SvgPicture.asset(VectorImageAssets.ic_edit),
+                                                const SizedBox(width: 10),
+                                                Text(
+                                                  "Board name",
+                                                  style: Theme.of(context).textTheme.headline5,
+                                                )
+                                              ],
                                             ),
-                                            PopupMenuItem(
-                                              value: 3,
-                                              child: Row(
-                                                children: [
-                                                  SvgPicture.asset(VectorImageAssets.ic_delete, color: AppColors.red60,),
-                                                  const SizedBox(width: 10),
-                                                  Text(
-                                                    "Delete board",
-                                                    style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.red60),
-                                                  )
-                                                ],
-                                              ),
+                                          ),
+                                          PopupMenuItem(
+                                            value: 3,
+                                            child: Row(
+                                              children: [
+                                                SvgPicture.asset(
+                                                  VectorImageAssets.ic_delete,
+                                                  color: AppColors.red60,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Text(
+                                                  "Delete board",
+                                                  style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.red60),
+                                                )
+                                              ],
                                             ),
-                                          ],
-                                          offset: const Offset(-20, 40),
-                                          color: AppColors.primaryWhite,
-                                          elevation: 2,
-                                          onSelected: (value) {
-                                            if (value == 1) {
-                                              taskNameController.clear();
-                                              showTaskNameDialog(boardId: boardSnapshot.data![index].id ?? "", index: boardSnapshot.data!.length);
-                                            } else if (value == 2) {
-                                              boardNameController.text = boardSnapshot.data![index].name ?? "";
-                                              showUpdateBoardNameDialog(boardId: boardSnapshot.data![index].id ?? "");
-                                            }
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 16),
-                                    Expanded(
+                                          ),
+                                        ],
+                                        padding: const EdgeInsets.all(0),
+                                        offset: const Offset(-20, 40),
+                                        color: AppColors.primaryWhite,
+                                        elevation: 2,
+                                        onSelected: (value) {
+                                          if (value == 1) {
+                                            taskNameController.clear();
+                                            showTaskNameDialog(boardId: boardSnapshot.data![index].id ?? "", index: boardSnapshot.data!.length);
+                                          } else if (value == 2) {
+                                            boardNameController.text = boardSnapshot.data![index].name ?? "";
+                                            showUpdateBoardNameDialog(boardId: boardSnapshot.data![index].id ?? "");
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 12),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                       child: SingleChildScrollView(
                                         child: StreamBuilder<List<TaskModel>>(
                                             stream: bloc.getListTaskOrderByIndexStream(boardSnapshot.data![index].id ?? ""),
@@ -193,7 +215,6 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                                               onTap: () => Navigator.pushNamed(context, Routes.task,
                                                                   arguments: listTaskSnapshot.data![indexListTask]),
                                                               margin: const EdgeInsets.only(bottom: 16),
-                                                              //paddingChild: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                                                               color: AppColors.primaryWhite,
                                                               child: Row(
                                                                 children: [
@@ -204,7 +225,7 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                                                           listTaskSnapshot.data![indexListTask].from != null) {
                                                                         return 90.0;
                                                                       } else {
-                                                                        return 60.0;
+                                                                        return 50.0;
                                                                       }
                                                                     }(),
                                                                     color: () {
@@ -212,7 +233,8 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                                                         return AppColors.green60;
                                                                       } else {
                                                                         if (listTaskSnapshot.data![indexListTask].to != null &&
-                                                                            listTaskSnapshot.data![indexListTask].to!.compareTo(DateTime.now()) < 0) {
+                                                                            listTaskSnapshot.data![indexListTask].to!.compareTo(DateTime.now()) <
+                                                                                0) {
                                                                           return AppColors.red60;
                                                                         } else {
                                                                           return AppColors.mediumPersianBlue;
@@ -240,12 +262,14 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                                                             const SizedBox(height: 8),
                                                                             Text(
                                                                               "From: ${listTaskSnapshot.data![indexListTask].from?.day.toString().padLeft(2, '0')}/${listTaskSnapshot.data![indexListTask].from?.month.toString().padLeft(2, '0')}/${listTaskSnapshot.data![indexListTask].from?.year} - ${listTaskSnapshot.data![indexListTask].from?.hour.toString().padLeft(2, '0')}:${listTaskSnapshot.data![indexListTask].from?.minute.toString().padLeft(2, '0')}",
-                                                                              style: Theme.of(context).textTheme.headline5?.copyWith(fontSize: 14),
+                                                                              style:
+                                                                                  Theme.of(context).textTheme.headline5?.copyWith(fontSize: 14),
                                                                             ),
                                                                             const SizedBox(height: 8),
                                                                             Text(
                                                                               "To: ${listTaskSnapshot.data![indexListTask].to?.day.toString().padLeft(2, '0')}/${listTaskSnapshot.data![indexListTask].to?.month.toString().padLeft(2, '0')}/${listTaskSnapshot.data![indexListTask].to?.year} - ${listTaskSnapshot.data![indexListTask].to?.hour.toString().padLeft(2, '0')}:${listTaskSnapshot.data![indexListTask].to?.minute.toString().padLeft(2, '0')}",
-                                                                              style: Theme.of(context).textTheme.headline5?.copyWith(fontSize: 14),
+                                                                              style:
+                                                                                  Theme.of(context).textTheme.headline5?.copyWith(fontSize: 14),
                                                                             ),
                                                                           ],
                                                                         ),
@@ -263,22 +287,19 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                             }),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              );
-                            },
-                            separatorBuilder: (BuildContext context, int index) {
-                              return const SizedBox(width: 8);
-                            },
-                          ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const SizedBox(width: 8);
+                          },
                         ),
-                      ],
-                    );
-                  } else {
-                    return Container();
-                  }
-                }),
-          );
+                      )
+                      : Container(),
+                );
+              });
         });
   }
 
@@ -609,12 +630,6 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                       borderSide: BorderSide(color: AppColors.red60, width: 1),
                     ),
                   ),
-                  validator: (value) {
-                    if (value == null || value == "") {
-                      return "Don't leave this information blank";
-                    }
-                    return null;
-                  },
                 ),
               ),
             ),
@@ -635,7 +650,7 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                 ),
                 onPressed: () {
                   primaryFocus?.unfocus();
-                  if (_taskNameFormKey.currentState?.validate() == true) {
+                  if (_taskNameFormKey.currentState?.validate() == true && taskNameController.text != "") {
                     primaryFocus?.unfocus();
                     bloc.createTask(name: taskNameController.text.trim(), boardId: boardId, projectId: project.id ?? "", index: index);
                     Navigator.pop(context);
@@ -860,6 +875,76 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                   if (_projectFormKey.currentState?.validate() == true) {
                     primaryFocus?.unfocus();
                     bloc.updateProjectDescription(projectId: projectId, description: projectDescriptionController.text.trim());
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  void showAddBoardDialog({required String projectId, required int index}) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            insetPadding: const EdgeInsets.all(16),
+            title: Text(
+              "Board name",
+              style: Theme.of(context).textTheme.headline3,
+            ),
+            content: Form(
+              key: _boardNameFormKey,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: CustomTextField(
+                  textFieldType: TextFieldType.text,
+                  textFieldConfig: TextFieldConfig(
+                    controller: boardNameController,
+                    style: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral10),
+                    cursorColor: AppColors.primaryBlack,
+                  ),
+                  decorationConfig: TextFieldDecorationConfig(
+                    hintText: "Enter board name",
+                    hintStyle: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral60),
+                    errorStyle: Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.w300, fontSize: 13, color: AppColors.red60),
+                    enabledBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.neutral95, width: 1),
+                    ),
+                    focusedBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.mediumPersianBlue, width: 1),
+                    ),
+                    errorBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.red60, width: 1),
+                    ),
+                    focusedErrorBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.red60, width: 1),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                child: Text(
+                  'Cancel',
+                  style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.primaryBlack),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text(
+                  'Create',
+                  style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.mediumPersianBlue),
+                ),
+                onPressed: () {
+                  primaryFocus?.unfocus();
+                  if (_boardNameFormKey.currentState?.validate() == true && boardNameController.text != "") {
+                    primaryFocus?.unfocus();
+                    bloc.createBoard(projectId: projectId, name: boardNameController.text.trim(), index: index);
                     Navigator.pop(context);
                   }
                 },

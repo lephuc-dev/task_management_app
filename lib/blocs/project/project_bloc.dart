@@ -37,7 +37,7 @@ class ProjectBloc extends BaseBloc<ProjectState> {
   Stream<List<ProjectParticipant>> getListProjectParticipantByProjectIdStream(String projectId) {
     return participantRepository.getListProjectParticipantByProjectIdStream(projectId);
   }
-  
+
   Stream<User> getInformationUserByIdStream(String uid) {
     return userRepository.getInformationUserByIdStream(uid);
   }
@@ -56,5 +56,9 @@ class ProjectBloc extends BaseBloc<ProjectState> {
 
   void updateProjectDescription({required String projectId, required String description}) {
     projectRepository.updateDescription(projectId: projectId, description: description);
+  }
+
+  void createBoard({required String projectId, required String name, required int index}) {
+    boardRepository.createBoard(projectId: projectId, name: name, index: index);
   }
 }

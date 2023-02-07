@@ -8,11 +8,12 @@ class ProjectRepository {
     return _projectFirestore.where("id", isEqualTo: projectId).snapshots().map((snapshot) => Project.fromJson(snapshot.docs[0].data()));
   }
 
-  void createProject({required String name}) {
-    String id = DateTime.now().millisecondsSinceEpoch.toString();
+  void createProject({required String id, required String name}) {
     _projectFirestore.doc(id).set({
       "id": id,
       "name": name,
+      "description": "",
+      "image": "",
     });
   }
 

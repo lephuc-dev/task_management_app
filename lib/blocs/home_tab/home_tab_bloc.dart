@@ -31,6 +31,12 @@ class HomeTabBloc extends BaseBloc<HomeTabState> {
     return projectRepository.getProjectStream(projectId);
   }
 
+  void createProject({required String name}) {
+    String id = DateTime.now().millisecondsSinceEpoch.toString();
+    projectRepository.createProject(name: name, id: id);
+    projectParticipantRepository.createProjectParticipant(projectId: id, userId: authenticationRepository.getCurrentUserId(), role: "Owner");
+  }
+
   @override
   void dispose() {
     super.dispose();

@@ -33,4 +33,15 @@ class ProjectParticipantRepository {
         .snapshots()
         .map((snapshot) => snapshot.docs[0]['role']);
   }
+
+  void createProjectParticipant({required String projectId, required String userId, required String role}) {
+    String id = DateTime.now().millisecondsSinceEpoch.toString();
+    _projectParticipantFirestore.doc(id).set({
+      "id": id,
+      "project_id": projectId,
+      "user_id": userId,
+      "role": role,
+      "favorite": false,
+    });
+  }
 }

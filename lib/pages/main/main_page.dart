@@ -32,28 +32,28 @@ class _MainPageState extends BaseState<MainPage, MainBloc> {
   final bottomBarIcons = [
     VectorImageAssets.ic_home,
     VectorImageAssets.ic_schedule,
-    VectorImageAssets.ic_notification,
+    //VectorImageAssets.ic_notification,
     VectorImageAssets.ic_user,
   ];
 
   final bottomBarActiveIcons = [
     VectorImageAssets.ic_home_solid,
     VectorImageAssets.ic_schedule_solid,
-    VectorImageAssets.ic_notification_solid,
+    //VectorImageAssets.ic_notification_solid,
     VectorImageAssets.ic_user_solid,
   ];
 
   final List<String> bottomBarTitles = [
     "Home",
     "Schedule",
-    "Notification",
+    //"Notification",
     "Profile",
   ];
 
   late List<Widget> tabScreens = [
     HomeTabPage(bloc: widget.homeTabBloc),
     ScheduleTabPage(bloc: widget.scheduleTabBloc),
-    NotificationTabPage(bloc: widget.notificationTabBloc),
+    //NotificationTabPage(bloc: widget.notificationTabBloc),
     ProfileTabPage(bloc: widget.profileTabBloc),
   ];
 
