@@ -9,6 +9,7 @@ class ProjectBloc extends BaseBloc<ProjectState> {
   final TaskRepository taskRepository;
   final ProjectParticipantRepository participantRepository;
   final UserRepository userRepository;
+  final AuthenticationRepository authenticationRepository;
 
   ProjectBloc(
     this.projectRepository,
@@ -16,6 +17,7 @@ class ProjectBloc extends BaseBloc<ProjectState> {
     this.participantRepository,
     this.taskRepository,
     this.userRepository,
+    this.authenticationRepository,
   );
 
   Stream<List<BoardModel>> getListBoardOrderByIndexStream(String projectId) {
@@ -60,5 +62,18 @@ class ProjectBloc extends BaseBloc<ProjectState> {
 
   void createBoard({required String projectId, required String name, required int index}) {
     boardRepository.createBoard(projectId: projectId, name: name, index: index);
+  }
+
+  Stream<String> getRole({required String projectId}) {
+    return participantRepository.getRole(userId: authenticationRepository.getCurrentUserId(), projectId: projectId);
+  }
+
+  Future<void> changeImage({required String filePath, required String projectId}) async {
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    projectRepository.changeImage(
+      fileName: fileName,
+      projectId: projectId,
+      filePath: filePath,
+    );
   }
 }

@@ -89,6 +89,8 @@ dependencies:
   rflutter_alert: ^2.0.4
   flutter_local_notifications: ^13.0.0
 
+  drag_and_drop_lists: ^0.3.3
+
   badges: ^3.0.2
 
 dev_dependencies:

@@ -382,8 +382,6 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
                                               );
                                             }
                                           }
-                                          print("Datetime 0 ::: ${dateTimeList?[0].day}/${dateTimeList?[0].month}");
-                                          print("Datetime 1 ::: ${dateTimeList?[1].day}/${dateTimeList?[1].month}");
                                         }
                                       : null,
                                   paddingChild: const EdgeInsets.all(16),
