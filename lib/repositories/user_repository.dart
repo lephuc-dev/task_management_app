@@ -36,4 +36,15 @@ class UserRepository {
       onUpdateError(e.toString());
     }
   }
+
+  Future<String?> getUidByEmail(String email) async {
+    try {
+      User? user = await _userFireStore.where("email", isEqualTo: email).snapshots().map((snapshot) => User.fromJson(snapshot.docs[0].data())).first;
+      print("uid by email ::: ${user.uid}");
+      return user.uid;
+    } catch (error) {
+      print("uid by email ::: null");
+      return null;
+    }
+  }
 }

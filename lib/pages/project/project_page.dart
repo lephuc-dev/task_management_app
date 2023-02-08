@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../base/base.dart';
@@ -10,6 +11,7 @@ import '../../widgets/widgets.dart';
 
 class ProjectPage extends StatefulWidget {
   final ProjectBloc bloc;
+
   const ProjectPage({Key? key, required this.bloc}) : super(key: key);
 
   @override
@@ -20,14 +22,18 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
   bool isInit = false;
   late Project project;
 
+  String choice = "Viewer";
+
   TextEditingController taskNameController = TextEditingController();
   TextEditingController boardNameController = TextEditingController();
   TextEditingController projectNameController = TextEditingController();
   TextEditingController projectDescriptionController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
   final _taskNameFormKey = GlobalKey<FormState>();
   final _boardNameFormKey = GlobalKey<FormState>();
   final _projectFormKey = GlobalKey<FormState>();
+  final _emailFormKey = GlobalKey<FormState>();
 
   bool isLoadingImage = false;
 
@@ -37,6 +43,7 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
     boardNameController.dispose();
     projectNameController.dispose();
     projectDescriptionController.dispose();
+    emailController.dispose();
     super.dispose();
   }
 
@@ -48,6 +55,14 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
         isInit = true;
       });
     }
+  }
+
+  List<List<TaskModel>> list = [];
+
+  @override
+  void initState() {
+    super.initState();
+    List.generate(20, (index) => list.add([]));
   }
 
   @override
@@ -503,7 +518,7 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                             color: AppColors.neutral99,
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.only(top: 16.0, left: 16, right: 16, bottom: 8),
                             child: Text(
                               "Members",
                               style: Theme.of(context).textTheme.headline4?.copyWith(
@@ -522,44 +537,146 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                               stream: bloc.getInformationUserByIdStream(snapshot.data![index].userId ?? ""),
                                               builder: (context, userSnapshot) {
                                                 if (userSnapshot.hasData) {
-                                                  return Container(
-                                                    padding: const EdgeInsets.only(left: 16, right: 16),
-                                                    margin: const EdgeInsets.only(bottom: 16),
-                                                    child: Row(
-                                                      children: [
-                                                        ClipOval(
-                                                          child: Image.network(
-                                                            userSnapshot.data?.avatar ?? "",
-                                                            height: 45,
-                                                            width: 45,
-                                                            fit: BoxFit.cover,
-                                                            loadingBuilder: (context, child, event) {
-                                                              if (event == null) return child;
-                                                              return const LoadingContainer(height: 45, width: 45);
-                                                            },
-                                                            errorBuilder: (context, object, stacktrace) {
-                                                              return AvatarWithName(
-                                                                name: userSnapshot.data?.name ?? "?",
-                                                                fontSize: 12,
-                                                                shapeSize: 45,
-                                                                count: 2,
-                                                              );
-                                                            },
+                                                  return Slidable(
+                                                    endActionPane: roleSnapshot.data == "Owner"
+                                                        ? ActionPane(
+                                                            motion: const ScrollMotion(),
+                                                            children: [
+                                                              SlidableAction(
+                                                                onPressed: (context) {},
+                                                                backgroundColor: AppColors.yellow60,
+                                                                foregroundColor: Colors.white,
+                                                                icon: Icons.edit,
+                                                              ),
+                                                              SlidableAction(
+                                                                onPressed: (context) {},
+                                                                backgroundColor: AppColors.red60,
+                                                                foregroundColor: Colors.white,
+                                                                icon: Icons.delete,
+                                                              ),
+                                                            ],
+                                                          )
+                                                        : null,
+                                                    child: Container(
+                                                      padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+                                                      margin: const EdgeInsets.only(bottom: 8),
+                                                      child: Row(
+                                                        children: [
+                                                          ClipOval(
+                                                            child: Image.network(
+                                                              userSnapshot.data?.avatar ?? "",
+                                                              height: 45,
+                                                              width: 45,
+                                                              fit: BoxFit.cover,
+                                                              loadingBuilder: (context, child, event) {
+                                                                if (event == null) return child;
+                                                                return const LoadingContainer(height: 45, width: 45);
+                                                              },
+                                                              errorBuilder: (context, object, stacktrace) {
+                                                                return AvatarWithName(
+                                                                  name: userSnapshot.data?.name ?? "?",
+                                                                  fontSize: 12,
+                                                                  shapeSize: 45,
+                                                                  count: 2,
+                                                                );
+                                                              },
+                                                            ),
                                                           ),
-                                                        ),
-                                                        const SizedBox(width: 16),
-                                                        Expanded(
-                                                          child: Text(
-                                                            userSnapshot.data?.name ?? "",
-                                                            style: Theme.of(context).textTheme.headline5,
+                                                          const SizedBox(width: 16),
+                                                          Expanded(
+                                                            child: Text(
+                                                              userSnapshot.data?.name ?? "",
+                                                              style: Theme.of(context).textTheme.headline5,
+                                                            ),
                                                           ),
-                                                        ),
-                                                        const SizedBox(width: 8),
-                                                        Text(
-                                                          snapshot.data?[index].role ?? "",
-                                                          style: Theme.of(context).textTheme.headline6,
-                                                        )
-                                                      ],
+                                                          const SizedBox(width: 8),
+                                                          Text(
+                                                            snapshot.data?[index].role ?? "",
+                                                            style: Theme.of(context).textTheme.headline6,
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return Container();
+                                                }
+                                              },
+                                            )),
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              }),
+                          StreamBuilder<List<InvitationModel>>(
+                              stream: bloc.getListInvitationByProjectId(project?.id ?? ""),
+                              builder: (context, inviteSnapshot) {
+                                if (inviteSnapshot.hasData && inviteSnapshot.data!.isNotEmpty) {
+                                  return Column(
+                                    children: List.generate(
+                                        inviteSnapshot.data?.length ?? 0,
+                                        (index) => StreamBuilder<User>(
+                                              stream: bloc.getInformationUserByIdStream(inviteSnapshot.data![index].receiverId ?? ""),
+                                              builder: (context, userSnapshot) {
+                                                if (userSnapshot.hasData) {
+                                                  return Slidable(
+                                                    endActionPane: roleSnapshot.data == "Owner"
+                                                        ? ActionPane(
+                                                            motion: const ScrollMotion(),
+                                                            children: [
+                                                              SlidableAction(
+                                                                onPressed: (context) {
+                                                                  bloc.deleteInvitation(id: inviteSnapshot.data?[index].id ?? "");
+                                                                },
+                                                                backgroundColor: AppColors.red60,
+                                                                foregroundColor: Colors.white,
+                                                                icon: Icons.delete,
+                                                              ),
+                                                            ],
+                                                          )
+                                                        : null,
+                                                    child: Container(
+                                                      padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+                                                      margin: const EdgeInsets.only(bottom: 8),
+                                                      child: Row(
+                                                        children: [
+                                                          ClipOval(
+                                                            child: Image.network(
+                                                              userSnapshot.data?.avatar ?? "",
+                                                              height: 45,
+                                                              width: 45,
+                                                              fit: BoxFit.cover,
+                                                              loadingBuilder: (context, child, event) {
+                                                                if (event == null) return child;
+                                                                return const LoadingContainer(height: 45, width: 45);
+                                                              },
+                                                              errorBuilder: (context, object, stacktrace) {
+                                                                return AvatarWithName(
+                                                                  name: userSnapshot.data?.name ?? "?",
+                                                                  fontSize: 12,
+                                                                  shapeSize: 45,
+                                                                  count: 2,
+                                                                );
+                                                              },
+                                                            ),
+                                                          ),
+                                                          const SizedBox(width: 16),
+                                                          Expanded(
+                                                            child: Text(
+                                                              userSnapshot.data?.name ?? "",
+                                                              style: Theme.of(context).textTheme.headline5,
+                                                            ),
+                                                          ),
+                                                          const SizedBox(width: 8),
+                                                          Text(
+                                                            "inviting...",
+                                                            style: Theme.of(context).textTheme.headline6?.copyWith(
+                                                                  fontStyle: FontStyle.italic,
+                                                                  fontSize: 16,
+                                                                ),
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   );
                                                 } else {
@@ -573,9 +690,15 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                 }
                               }),
                           Visibility(
-                            visible: roleSnapshot.data != "Viewer",
+                            visible: roleSnapshot.data == "Owner",
                             child: InkWellWrapper(
-                              onTap: () {},
+                              onTap: () {
+                                emailController.clear();
+                                setState(() {
+                                  choice = "Viewer";
+                                });
+                                showAddMemberDialog(projectId: project?.id ?? "");
+                              },
                               margin: const EdgeInsets.all(16),
                               paddingChild: const EdgeInsets.symmetric(vertical: 12),
                               color: AppColors.mediumPersianBlue,
@@ -1014,6 +1137,125 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                     primaryFocus?.unfocus();
                     bloc.createBoard(projectId: projectId, name: boardNameController.text.trim(), index: index);
                     Navigator.pop(context);
+                  }
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  void showAddMemberDialog({required String projectId}) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            insetPadding: const EdgeInsets.all(16),
+            title: Text(
+              "Add new member",
+              style: Theme.of(context).textTheme.headline3,
+            ),
+            content: StatefulBuilder(
+              builder: (BuildContext context, void Function(void Function()) setState) {
+                return Form(
+                  key: _emailFormKey,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CustomTextField(
+                          textFieldType: TextFieldType.email,
+                          textFieldConfig: TextFieldConfig(
+                            controller: emailController,
+                            style: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral10),
+                            cursorColor: AppColors.primaryBlack,
+                          ),
+                          decorationConfig: TextFieldDecorationConfig(
+                            hintText: "Enter email new member",
+                            hintStyle: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral60),
+                            errorStyle:
+                                Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.w300, fontSize: 13, color: AppColors.red60),
+                            enabledBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.neutral95, width: 1),
+                            ),
+                            focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.mediumPersianBlue, width: 1),
+                            ),
+                            errorBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.red60, width: 1),
+                            ),
+                            focusedErrorBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.red60, width: 1),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: DropdownButtonFormField(
+                            value: choice,
+                            items: const [
+                              DropdownMenuItem(
+                                value: "Viewer",
+                                child: Text("Viewer"),
+                              ),
+                              DropdownMenuItem(
+                                value: "Editor",
+                                child: Text("Editor"),
+                              ),
+                              DropdownMenuItem(
+                                value: "Owner",
+                                child: Text("Owner"),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                choice = value!;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+            actions: [
+              TextButton(
+                child: Text(
+                  'Cancel',
+                  style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.primaryBlack),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text(
+                  'Invite',
+                  style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.mediumPersianBlue),
+                ),
+                onPressed: () async {
+                  primaryFocus?.unfocus();
+                  if (_emailFormKey.currentState?.validate() == true && emailController.text != "") {
+                    primaryFocus?.unfocus();
+                    bool checkNewUser = await bloc.checkInvalidNewUser(projectId: projectId, email: emailController.text.trim());
+                    bool checkNewInvitation = await bloc.checkInvalidInvitation(projectId: projectId, email: emailController.text.trim());
+                    if (checkNewUser == true && checkNewInvitation == true) {
+                      primaryFocus?.unfocus();
+                      String? receiverId = await bloc.getUidByEmail(email: emailController.text.trim());
+                      bloc
+                          .createInvitation(projectId: projectId, role: choice, receiverId: receiverId ?? "")
+                          .whenComplete(() => Navigator.pop(context));
+                    } else {
+                      if (checkNewUser == false) {
+                        print("message ::: Không tìm thấy người này");
+                      } else {
+                        print("message ::: Người này đang được mời");
+                      }
+                    }
                   }
                 },
               ),

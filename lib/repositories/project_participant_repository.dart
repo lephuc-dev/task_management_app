@@ -44,4 +44,19 @@ class ProjectParticipantRepository {
       "favorite": false,
     });
   }
+
+  Future<bool> checkInvalidNewUser({required String uid, required String projectId}) async {
+    List<ProjectParticipant> list = await _projectParticipantFirestore
+        .where("project_id", isEqualTo: projectId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((document) => ProjectParticipant.fromJson(document.data())).toList())
+        .first;
+
+    for (var element in list) {
+      if (element.userId == uid || uid == "") {
+        return false;
+      }
+    }
+    return true;
+  }
 }

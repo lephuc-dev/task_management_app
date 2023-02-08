@@ -7,3 +7,4 @@ export 'task_participant_model.dart';
 export 'check_list_item_model.dart';
 export 'link_model.dart';
 export 'comment_model.dart';
+export 'invitation_model.dart';

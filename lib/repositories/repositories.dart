@@ -6,3 +6,4 @@ export 'board_repository.dart';
 export 'task_repository.dart';
 export 'task_participant_repository.dart';
 export 'comment_repository.dart';
+export 'invitation_repository.dart';

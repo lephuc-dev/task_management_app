@@ -10,6 +10,7 @@ class ProjectBloc extends BaseBloc<ProjectState> {
   final ProjectParticipantRepository participantRepository;
   final UserRepository userRepository;
   final AuthenticationRepository authenticationRepository;
+  final InvitationRepository invitationRepository;
 
   ProjectBloc(
     this.projectRepository,
@@ -18,6 +19,7 @@ class ProjectBloc extends BaseBloc<ProjectState> {
     this.taskRepository,
     this.userRepository,
     this.authenticationRepository,
+    this.invitationRepository,
   );
 
   Stream<List<BoardModel>> getListBoardOrderByIndexStream(String projectId) {
@@ -38,6 +40,10 @@ class ProjectBloc extends BaseBloc<ProjectState> {
 
   Stream<List<ProjectParticipant>> getListProjectParticipantByProjectIdStream(String projectId) {
     return participantRepository.getListProjectParticipantByProjectIdStream(projectId);
+  }
+
+  Stream<List<InvitationModel>> getListInvitationByProjectId(String projectId) {
+    return invitationRepository.getListInvitationByProjectId(projectId);
   }
 
   Stream<User> getInformationUserByIdStream(String uid) {
@@ -75,5 +81,39 @@ class ProjectBloc extends BaseBloc<ProjectState> {
       projectId: projectId,
       filePath: filePath,
     );
+  }
+
+  Future<String?> getUidByEmail({required String email}) async {
+    String? result = await userRepository.getUidByEmail(email);
+    return result;
+  }
+
+  Future<bool> checkInvalidNewUser({required String projectId, required String email}) async {
+    String? uid = await userRepository.getUidByEmail(email);
+    if (uid != null) {
+      return await participantRepository.checkInvalidNewUser(uid: uid, projectId: projectId);
+    }
+    return false;
+  }
+
+  Future<bool> checkInvalidInvitation({required String projectId, required String email}) async {
+    String? uid = await userRepository.getUidByEmail(email);
+    if (uid != null) {
+      return await invitationRepository.check(userId: uid, projectId: projectId);
+    }
+    return false;
+  }
+
+  Future<void> createInvitation({required String projectId, required String role, required String receiverId}) async {
+    invitationRepository.createInvitation(
+      projectId: projectId,
+      userId: authenticationRepository.getCurrentUserId(),
+      receiverId: receiverId,
+      role: role,
+    );
+  }
+
+  void deleteInvitation({required String id}) {
+    invitationRepository.deleteInvitation(id);
   }
 }
