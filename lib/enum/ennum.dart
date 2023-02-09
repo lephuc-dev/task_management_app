@@ -1,0 +1,18 @@
+enum NotificationType {
+  deleteBoard,
+  editBoardName,
+  editTaskName,
+  editTaskDescription,
+  editTaskCompleted,
+  editTaskDeadline,
+  addTaskMember,
+  addTaskComment,
+  deleteTaskMember,
+  deleteTask,
+  editProjectName,
+  editProjectDescription,
+  addProjectMember,
+  leaveProject,
+  deleteProject,
+  editProjectRole,
+}

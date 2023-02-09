@@ -1,10 +1,12 @@
+import 'package:task_management_app/enum/ennum.dart';
+
 class NotificationModel {
   String? id;
   String? projectId;
   String? taskId;
   String? userId;
   String? receiverId;
-  String? content;
+  NotificationType? type;
   DateTime? time;
   bool? isRead;
 
@@ -14,7 +16,7 @@ class NotificationModel {
     this.taskId,
     this.userId,
     this.receiverId,
-    this.content,
+    this.type,
     this.time,
     this.isRead,
   });
@@ -25,7 +27,7 @@ class NotificationModel {
     taskId = json['task_id'];
     userId = json['user_id'];
     receiverId = json['receiver_id'];
-    content = json['content'];
+    type = NotificationType.values.byName(json['type']);
     isRead = json['is_read'];
     if (json['time'] != null) {
       time = DateTime.fromMillisecondsSinceEpoch(json['time']);
@@ -39,7 +41,7 @@ class NotificationModel {
     data['task_id'] = taskId;
     data['user_id'] = userId;
     data['receiver_id'] = receiverId;
-    data['content'] = content;
+    data['type'] = type?.name;
     data['is_read'] = isRead;
     if (time != null) {
       data['time'] = time!.millisecondsSinceEpoch;

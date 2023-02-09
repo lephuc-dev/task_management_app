@@ -220,7 +220,7 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                                             boardId: boardSnapshot.data![index].id ?? "", index: boardSnapshot.data!.length);
                                                       } else if (value == 2) {
                                                         boardNameController.text = boardSnapshot.data![index].name ?? "";
-                                                        showUpdateBoardNameDialog(boardId: boardSnapshot.data![index].id ?? "");
+                                                        showUpdateBoardNameDialog(boardId: boardSnapshot.data![index].id ?? "", projectId: boardSnapshot.data![index].projectId ?? "");
                                                       } else if (value == 3) {
                                                         showDialog(
                                                           context: context,
@@ -968,7 +968,7 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
         });
   }
 
-  void showUpdateBoardNameDialog({required String boardId}) {
+  void showUpdateBoardNameDialog({required String boardId, required String projectId}) {
     showDialog(
         context: context,
         builder: (context) {
@@ -1034,7 +1034,7 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                   primaryFocus?.unfocus();
                   if (_boardNameFormKey.currentState?.validate() == true) {
                     primaryFocus?.unfocus();
-                    bloc.updateBoardName(id: boardId, name: boardNameController.text.trim());
+                    bloc.updateBoardName(id: boardId, name: boardNameController.text.trim(), projectId: projectId);
                     Navigator.pop(context);
                   }
                 },

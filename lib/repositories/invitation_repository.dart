@@ -6,7 +6,7 @@ class InvitationRepository {
   final _invitationFireStore = FirebaseFirestore.instance.collection("INVITATIONS");
 
   void createInvitation({required String projectId, required String userId, required String role, required String receiverId}) {
-    int id = DateTime.now().microsecondsSinceEpoch;
+    int id = DateTime.now().millisecondsSinceEpoch;
     _invitationFireStore
         .doc(id.toString())
         .set({

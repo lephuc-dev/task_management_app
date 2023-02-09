@@ -26,6 +26,13 @@ class ProjectParticipantRepository {
         .map((snapshot) => snapshot.docs.map((document) => ProjectParticipant.fromJson(document.data())).toList());
   }
 
+  Future<List<ProjectParticipant>> getListProjectParticipantByProjectId(String projectId) async {
+    return await _projectParticipantFirestore
+        .where("project_id", isEqualTo: projectId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((document) => ProjectParticipant.fromJson(document.data())).toList()).first;
+  }
+
   Stream<String> getRole({required String userId, required String projectId}) {
     return _projectParticipantFirestore
         .where("user_id", isEqualTo: userId)

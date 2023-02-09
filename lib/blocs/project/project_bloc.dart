@@ -1,3 +1,4 @@
+import '../../enum/ennum.dart';
 import '../blocs.dart';
 import '../../base/base.dart';
 import '../../models/models.dart';
@@ -12,6 +13,7 @@ class ProjectBloc extends BaseBloc<ProjectState> {
   final AuthenticationRepository authenticationRepository;
   final InvitationRepository invitationRepository;
   final TaskParticipantRepository taskParticipantRepository;
+  final NotificationRepository notificationRepository;
 
   ProjectBloc(
     this.projectRepository,
@@ -22,7 +24,28 @@ class ProjectBloc extends BaseBloc<ProjectState> {
     this.authenticationRepository,
     this.invitationRepository,
     this.taskParticipantRepository,
+    this.notificationRepository,
   );
+
+  Future<void> notification({required String projectId, required NotificationType type}) async {
+    List<ProjectParticipant> list = await projectParticipantRepository.getListProjectParticipantByProjectId(projectId);
+
+    if (list.isNotEmpty) {
+      for (var element in list) {
+        if (element.userId != authenticationRepository.getCurrentUserId() &&
+            element.userId != "" &&
+            authenticationRepository.getCurrentUserId() != "") {
+          notificationRepository.createNotification(
+            projectId: projectId,
+            userId: authenticationRepository.getCurrentUserId(),
+            receiverId: element.userId ?? "",
+            taskId: "",
+            type: type,
+          );
+        }
+      }
+    }
+  }
 
   Stream<List<BoardModel>> getListBoardOrderByIndexStream(String projectId) {
     return boardRepository.getListBoardOrderByIndexStream(projectId);
@@ -56,16 +79,19 @@ class ProjectBloc extends BaseBloc<ProjectState> {
     taskRepository.createTask(name: name, boardId: boardId, projectId: projectId, index: index);
   }
 
-  void updateBoardName({required String id, required String name}) {
+  void updateBoardName({required String id, required String name, required projectId}) {
     boardRepository.updateBoardName(id: id, name: name);
+    notification(projectId: projectId, type: NotificationType.editBoardName);
   }
 
   void updateProjectName({required String projectId, required String name}) {
     projectRepository.updateName(projectId: projectId, name: name);
+    notification(projectId: projectId, type: NotificationType.editProjectName);
   }
 
   void updateProjectDescription({required String projectId, required String description}) {
     projectRepository.updateDescription(projectId: projectId, description: description);
+    notification(projectId: projectId, type: NotificationType.editProjectDescription);
   }
 
   void createBoard({required String projectId, required String name, required int index}) {

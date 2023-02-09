@@ -26,6 +26,12 @@ class TaskRepository {
     return _taskFireStore.where("id", isEqualTo: taskId).snapshots().map((snapshot) => TaskModel.fromJson(snapshot.docs[0].data()));
   }
 
+  Future<TaskModel> getTask(String taskId) async {
+    TaskModel taskModel =
+        await _taskFireStore.where("id", isEqualTo: taskId).snapshots().map((snapshot) => TaskModel.fromJson(snapshot.docs[0].data())).first;
+    return taskModel;
+  }
+
   void updateName(String taskId, String newName) {
     _taskFireStore.doc(taskId).update({
       "name": newName,

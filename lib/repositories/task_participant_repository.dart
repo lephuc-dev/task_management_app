@@ -11,6 +11,16 @@ class TaskParticipantRepository {
         .map((snapshot) => snapshot.docs.map((document) => TaskParticipant.fromJson(document.data())).toList());
   }
 
+  Future<List<TaskParticipant>> getListTaskParticipantByTaskId(String taskId) async {
+    List<TaskParticipant> list = await _taskParticipantFirestore
+        .where("task_id", isEqualTo: taskId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((document) => TaskParticipant.fromJson(document.data())).toList())
+        .first;
+
+    return list;
+  }
+
   Stream<List<TaskParticipant>> getListTaskParticipantByTaskIdStream(String taskId) {
     return _taskParticipantFirestore
         .where("task_id", isEqualTo: taskId)

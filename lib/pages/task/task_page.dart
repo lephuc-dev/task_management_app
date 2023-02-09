@@ -1193,7 +1193,9 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
                                         margin: const EdgeInsets.only(bottom: 16),
                                         onTap: () {
                                           if (isCheck == true) {
-                                            bloc.deleteTaskParticipant(participantId: taskParticipantSnapshot.data?[index].id ?? "");
+                                            bloc.deleteTaskParticipant(
+                                                participantId: taskParticipantSnapshot.data?[index].id ?? "",
+                                                taskId: taskParticipantSnapshot.data?[index].taskId ?? "");
                                           } else {
                                             bloc.createTaskParticipant(userId: userSnapshot.data!.uid ?? "", taskId: taskModel.id ?? "");
                                           }

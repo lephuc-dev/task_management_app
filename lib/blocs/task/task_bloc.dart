@@ -1,3 +1,4 @@
+import '../../enum/ennum.dart';
 import '../../models/models.dart';
 import '../../repositories/repositories.dart';
 import '../../base/base.dart';
@@ -10,6 +11,7 @@ class TaskBloc extends BaseBloc<TaskState> {
   final UserRepository userRepository;
   final CommentRepository commentRepository;
   final AuthenticationRepository authenticationRepository;
+  final NotificationRepository notificationRepository;
 
   TaskBloc(
     this.taskRepository,
@@ -18,7 +20,28 @@ class TaskBloc extends BaseBloc<TaskState> {
     this.projectParticipantRepository,
     this.commentRepository,
     this.authenticationRepository,
+    this.notificationRepository,
   );
+
+  Future<void> notification({required String taskId, required NotificationType type}) async {
+    List<TaskParticipant> list = await taskParticipantRepository.getListTaskParticipantByTaskId(taskId);
+
+    if (list.isNotEmpty) {
+      for (var element in list) {
+        if (element.userId != authenticationRepository.getCurrentUserId() &&
+            element.userId != "" &&
+            authenticationRepository.getCurrentUserId() != "") {
+          notificationRepository.createNotification(
+            projectId: "",
+            userId: authenticationRepository.getCurrentUserId(),
+            receiverId: element.userId ?? "",
+            taskId: taskId,
+            type: type,
+          );
+        }
+      }
+    }
+  }
 
   Stream<List<CommentModel>> getListCommentByTaskId(String taskId) {
     return commentRepository.getListCommentByTaskId(taskId);
@@ -38,10 +61,12 @@ class TaskBloc extends BaseBloc<TaskState> {
 
   void updateName(String taskId, String newName) {
     taskRepository.updateName(taskId, newName);
+    notification(taskId: taskId, type: NotificationType.editTaskName);
   }
 
   void updateDescription(String taskId, String newDescription) {
     taskRepository.updateDescription(taskId, newDescription);
+    notification(taskId: taskId, type: NotificationType.editTaskDescription);
   }
 
   Stream<List<ProjectParticipant>> getListProjectParticipantByProjectIdStream(String projectId) {
@@ -50,10 +75,12 @@ class TaskBloc extends BaseBloc<TaskState> {
 
   void createTaskParticipant({required String userId, required String taskId}) {
     taskParticipantRepository.createTaskParticipant(userId: userId, taskId: taskId);
+    notification(taskId: taskId, type: NotificationType.addTaskMember);
   }
 
-  void deleteTaskParticipant({required String participantId}) {
+  void deleteTaskParticipant({required String taskId, required String participantId}) {
     taskParticipantRepository.deleteTaskParticipant(participantId: participantId);
+    notification(taskId: taskId, type: NotificationType.deleteTaskMember);
   }
 
   void setDoneTaskState({
@@ -150,6 +177,7 @@ class TaskBloc extends BaseBloc<TaskState> {
 
   void createComment({required String taskId, required String content}) {
     commentRepository.createComment(authenticationRepository.getCurrentUserId(), taskId, content);
+    notification(taskId: taskId, type: NotificationType.addTaskComment);
   }
 
   void deleteComment({required String commentId}) {
@@ -158,6 +186,7 @@ class TaskBloc extends BaseBloc<TaskState> {
 
   void updateFromAndToTime({required String taskId, required DateTime from, required DateTime to}) {
     taskRepository.updateFromAndToTime(taskId: taskId, from: from, to: to);
+    notification(taskId: taskId, type: NotificationType.editTaskDeadline);
   }
 
   Stream<String> getRole({required String projectId}) {
@@ -166,6 +195,7 @@ class TaskBloc extends BaseBloc<TaskState> {
 
   void updateCompletedState({required String taskId, required bool value}) {
     taskRepository.updateCompletedState(taskId: taskId, value: value);
+    notification(taskId: taskId, type: NotificationType.editTaskCompleted);
   }
 
   String getUid() {
@@ -175,6 +205,7 @@ class TaskBloc extends BaseBloc<TaskState> {
   void deleteTaskAndListParticipant({required String taskId}) {
     taskRepository.deleteTask(taskId: taskId);
     taskParticipantRepository.deleteListParticipant(taskId: taskId);
+    notification(taskId: taskId, type: NotificationType.deleteTask);
   }
 
   @override

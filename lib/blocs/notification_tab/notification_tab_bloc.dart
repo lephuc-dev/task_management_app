@@ -7,6 +7,7 @@ class NotificationTabBloc extends BaseBloc<NotificationTabState> {
   final AuthenticationRepository authenticationRepository;
   final UserRepository userRepository;
   final ProjectRepository projectRepository;
+  final TaskRepository taskRepository;
   final InvitationRepository invitationRepository;
   final ProjectParticipantRepository projectParticipantRepository;
   final NotificationRepository notificationRepository;
@@ -18,6 +19,7 @@ class NotificationTabBloc extends BaseBloc<NotificationTabState> {
     this.invitationRepository,
     this.projectParticipantRepository,
     this.notificationRepository,
+    this.taskRepository,
   );
 
   Stream<List<InvitationModel>> getListInvitationByMyId() {
@@ -47,6 +49,22 @@ class NotificationTabBloc extends BaseBloc<NotificationTabState> {
 
   Stream<List<NotificationModel>> getListNotificationByMyId() {
     return notificationRepository.getListNotificationByUid(authenticationRepository.getCurrentUserId());
+  }
+
+  void setIsRead({required String notificationId}) {
+    notificationRepository.setIsReadTrue(notificationId: notificationId);
+  }
+
+  void deleteNotification({required String notificationId}) {
+    notificationRepository.deleteNotification(notificationId);
+  }
+
+  Future<TaskModel> getTask(String taskId) async {
+    return await taskRepository.getTask(taskId);
+  }
+
+  Future<Project> getProject(String projectId) async {
+    return await projectRepository.getProject(projectId);
   }
 
   @override

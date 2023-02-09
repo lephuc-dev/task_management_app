@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import '../enum/ennum.dart';
 import '../models/models.dart';
 
 class NotificationRepository {
@@ -10,9 +11,9 @@ class NotificationRepository {
     required String userId,
     required String receiverId,
     required String taskId,
-    required String content,
+    required NotificationType type,
   }) {
-    int id = DateTime.now().microsecondsSinceEpoch;
+    int id = DateTime.now().millisecondsSinceEpoch;
     _notificationFireStore
         .doc(id.toString())
         .set({
@@ -21,8 +22,9 @@ class NotificationRepository {
           "user_id": userId,
           "receiver_id": receiverId,
           "task_id": taskId,
-          "content": content,
+          "type": type.name,
           "time": id,
+          "isRead": false,
         })
         .then((value) => debugPrint("completed"))
         .catchError((error) => debugPrint(error.toString()));

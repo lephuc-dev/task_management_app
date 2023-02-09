@@ -12,6 +12,10 @@ class ProjectRepository {
     return _projectFirestore.where("id", isEqualTo: projectId).snapshots().map((snapshot) => Project.fromJson(snapshot.docs[0].data()));
   }
 
+  Future<Project> getProject(String projectId) async {
+    return await _projectFirestore.where("id", isEqualTo: projectId).snapshots().map((snapshot) => Project.fromJson(snapshot.docs[0].data())).first;
+  }
+
   void createProject({required String id, required String name}) {
     _projectFirestore.doc(id).set({
       "id": id,
