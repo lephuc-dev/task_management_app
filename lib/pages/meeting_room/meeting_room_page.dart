@@ -216,7 +216,7 @@ class _MeetingRoomPageState extends BaseState<MeetingRoomPage, MeetingRoomBloc> 
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                VideoCallPage(conferenceID: meeting.id.toString(),user: snapshot.data!,)));
+                                                VideoCallPage(conferenceID: meeting.id.toString(),currentuser: snapshot.data!,)));
                           }
                       ),
                     );
