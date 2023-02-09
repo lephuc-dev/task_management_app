@@ -73,7 +73,7 @@ class _MeetingPageState extends BaseState<MeetingPage, MeetingBloc> {
                 {
                   if (snapshot.data!.isNotEmpty) {
                     return Container(
-                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                          padding: const EdgeInsets.symmetric(vertical: 8,),
                           child: ListView.builder(
                             shrinkWrap: true,
                             itemCount: snapshot.data!.length,
@@ -84,14 +84,14 @@ class _MeetingPageState extends BaseState<MeetingPage, MeetingBloc> {
                                   builder: (context, projectSnapshot) {
                                     if (projectSnapshot.hasData) {
                                       return Container(
-                                        child: Column(
-                                          children: [
-                                            titleWidget(title: projectSnapshot.data!.name.toString()),
-                                            StreamBuilder<List<MeetingModel>>(
-                                              stream: widget.bloc.getListMeetingByMyProjectIdStream(projectSnapshot.data!.id.toString()),
-                                              builder: (context, meetingsnapshot) {
-                                                if(meetingsnapshot.hasData){
-                                                  return ListView.builder(
+                                        child: StreamBuilder<List<MeetingModel>>(
+                                          stream: widget.bloc.getListMeetingByMyProjectIdStream(projectSnapshot.data!.id.toString()),
+                                          builder: (context, meetingsnapshot) {
+                                            if(meetingsnapshot.hasData){
+                                              return Column(
+                                                children: [
+                                                  titleWidget(title: projectSnapshot.data!.name.toString()),
+                                                  ListView.builder(
                                                     shrinkWrap: true,
                                                       itemCount: meetingsnapshot.data!.length,
                                                       physics: const NeverScrollableScrollPhysics(),
@@ -99,15 +99,15 @@ class _MeetingPageState extends BaseState<MeetingPage, MeetingBloc> {
                                                         print("oke");
                                                         return MeetingItem(meeting: meetingsnapshot.data![index]);
                                                       }
-                                                  );
-                                                }
-                                                else
-                                                {
-                                                  return Container();
-                                                }
-                                              }
-                                            ),
-                                          ],
+                                                  ),
+                                                ],
+                                              );
+                                            }
+                                            else
+                                            {
+                                              return Container();
+                                            }
+                                          }
                                         ),
                                       );
                                     } else {
