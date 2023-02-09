@@ -844,32 +844,35 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                   ),
                             ),
                           ),
-                          InkWellWrapper(
-                            paddingChild: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                            onTap: () {},
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  VectorImageAssets.ic_logout,
-                                  height: 24,
-                                  width: 24,
-                                  color: AppColors.primaryBlack,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 16.0),
-                                  child: Text(
-                                    "Leave project",
-                                    style: Theme.of(context).textTheme.headline5,
+                          Visibility(
+                            visible: roleSnapshot.data != "Owner",
+                            child: InkWellWrapper(
+                              paddingChild: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                              border: const Border(top: BorderSide(color: AppColors.neutral99)),
+                              onTap: () {},
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    VectorImageAssets.ic_logout,
+                                    height: 24,
+                                    width: 24,
+                                    color: AppColors.primaryBlack,
                                   ),
-                                )
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 16.0),
+                                    child: Text(
+                                      "Leave project",
+                                      style: Theme.of(context).textTheme.headline5,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                           Visibility(
                             visible: roleSnapshot.data != "Viewer",
                             child: InkWellWrapper(
                               paddingChild: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                              border: const Border(top: BorderSide(color: AppColors.neutral99)),
                               onTap: () {},
                               child: Row(
                                 children: [

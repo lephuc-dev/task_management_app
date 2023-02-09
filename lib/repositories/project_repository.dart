@@ -48,4 +48,8 @@ class ProjectRepository {
     String url = await ref.getDownloadURL();
     await _projectFirestore.doc(projectId).update({"image": url});
   }
+
+  void deleteProject({required String projectId}) {
+    _projectFirestore.doc(projectId).delete();
+  }
 }
