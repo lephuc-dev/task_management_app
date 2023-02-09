@@ -71,6 +71,10 @@ class ProjectBloc extends BaseBloc<ProjectState> {
     return invitationRepository.getListInvitationByProjectId(projectId);
   }
 
+  String? getUid() {
+    return authenticationRepository.getCurrentUserId();
+  }
+
   Stream<User> getInformationUserByIdStream(String uid) {
     return userRepository.getInformationUserByIdStream(uid);
   }
@@ -165,5 +169,9 @@ class ProjectBloc extends BaseBloc<ProjectState> {
 
   void setFavoriteValue({required String id, required bool value}) {
     projectParticipantRepository.setFavoriteValue(id: id, value: value);
+  }
+
+  void deleteProjectParticipant({required String id}) {
+    projectParticipantRepository.deleteProjectParticipant(id: id);
   }
 }

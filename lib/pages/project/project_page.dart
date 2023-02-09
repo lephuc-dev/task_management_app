@@ -663,11 +663,14 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                                                 foregroundColor: Colors.white,
                                                                 icon: Icons.edit,
                                                               ),
-                                                              SlidableAction(
-                                                                onPressed: (context) {},
-                                                                backgroundColor: AppColors.red60,
-                                                                foregroundColor: Colors.white,
-                                                                icon: Icons.delete,
+                                                              Visibility(
+                                                                visible: userSnapshot.data!.uid != bloc.getUid() && userSnapshot.data!.uid != "",
+                                                                child: SlidableAction(
+                                                                  onPressed: (context) {},
+                                                                  backgroundColor: AppColors.red60,
+                                                                  foregroundColor: Colors.white,
+                                                                  icon: Icons.delete,
+                                                                ),
                                                               ),
                                                             ],
                                                           )
