@@ -88,20 +88,25 @@ class _MeetingPageState extends BaseState<MeetingPage, MeetingBloc> {
                                           stream: widget.bloc.getListMeetingByMyProjectIdStream(projectSnapshot.data!.id.toString()),
                                           builder: (context, meetingsnapshot) {
                                             if(meetingsnapshot.hasData){
-                                              return Column(
-                                                children: [
-                                                  titleWidget(title: projectSnapshot.data!.name.toString()),
-                                                  ListView.builder(
-                                                    shrinkWrap: true,
-                                                      itemCount: meetingsnapshot.data!.length,
-                                                      physics: const NeverScrollableScrollPhysics(),
-                                                      itemBuilder: (BuildContext context, int index){
-                                                        print("oke");
-                                                        return MeetingItem(meeting: meetingsnapshot.data![index]);
-                                                      }
-                                                  ),
-                                                ],
-                                              );
+                                              if(meetingsnapshot.data!.isNotEmpty){
+                                                return Column(
+                                                  children: [
+                                                    titleWidget(title: projectSnapshot.data!.name.toString()),
+                                                    ListView.builder(
+                                                        shrinkWrap: true,
+                                                        itemCount: meetingsnapshot.data!.length,
+                                                        physics: const NeverScrollableScrollPhysics(),
+                                                        itemBuilder: (BuildContext context, int index){
+                                                          print("oke");
+                                                          return MeetingItem(meeting: meetingsnapshot.data![index]);
+                                                        }
+                                                    ),
+                                                  ],
+                                                );
+                                              }
+                                              else{
+                                                return Container();
+                                              }
                                             }
                                             else
                                             {
