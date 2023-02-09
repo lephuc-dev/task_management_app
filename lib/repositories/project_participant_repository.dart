@@ -59,4 +59,22 @@ class ProjectParticipantRepository {
     }
     return true;
   }
+
+  void deleteProjectParticipant({required String id}) {
+    _projectParticipantFirestore.doc(id).delete();
+  }
+
+  Stream<ProjectParticipant> getFavoriteStream({required String projectId, required String userId}) {
+    return _projectParticipantFirestore
+        .where("project_id", isEqualTo: projectId)
+        .where("user_id", isEqualTo: userId)
+        .snapshots()
+        .map((snapshot) => ProjectParticipant.fromJson(snapshot.docs[0].data()));
+  }
+
+  void setFavoriteValue({required String id, required bool value}) {
+    _projectParticipantFirestore.doc(id).update({
+      "favorite": value,
+    });
+  }
 }

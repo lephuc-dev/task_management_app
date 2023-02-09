@@ -423,7 +423,28 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                   "About project",
                                   style: Theme.of(context).textTheme.headline5?.copyWith(fontSize: 20),
                                 ),
-                              )
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: StreamBuilder<ProjectParticipant>(
+                                    stream: bloc.getFavoriteStream(projectId: project?.id ?? ""),
+                                    builder: (context, favoriteSnapshot) {
+                                      return InkWellWrapper(
+                                        onTap: () {
+                                          bloc.setFavoriteValue(id: favoriteSnapshot.data?.id ?? "", value: !(favoriteSnapshot.data?.favorite ?? false));
+                                        },
+                                        margin: const EdgeInsets.only(right: 16),
+                                        child: favoriteSnapshot.hasData && favoriteSnapshot.data != null && favoriteSnapshot.data!.favorite == true
+                                            ? SvgPicture.asset(
+                                                VectorImageAssets.ic_heart_bold,
+                                          color: AppColors.red60,
+                                              )
+                                            : SvgPicture.asset(
+                                                VectorImageAssets.ic_heart,
+                                              ),
+                                      );
+                                    }),
+                              ),
                             ],
                           ),
                           Container(
@@ -433,7 +454,7 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                             color: AppColors.neutral99,
                           ),
                           InkWellWrapper(
-                            onTap: roleSnapshot.data != "Viewer"
+                            onTap: roleSnapshot.data == "Owner"
                                 ? () {
                                     projectNameController.text = snapshot.data?.name ?? "";
                                     showUpdateProjectNameDialog(projectId: project?.id ?? "");
@@ -444,11 +465,25 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Name",
-                                  style: Theme.of(context).textTheme.headline4?.copyWith(
-                                        color: AppColors.neutral10,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Name",
+                                      style: Theme.of(context).textTheme.headline4?.copyWith(
+                                            color: AppColors.neutral10,
+                                          ),
+                                    ),
+                                    Visibility(
+                                      visible: roleSnapshot.data == "Owner",
+                                      child: SvgPicture.asset(
+                                        VectorImageAssets.ic_edit,
+                                        height: 20,
+                                        width: 20,
+                                        fit: BoxFit.cover,
                                       ),
+                                    )
+                                  ],
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
@@ -475,18 +510,40 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Description",
-                                  style: Theme.of(context).textTheme.headline4?.copyWith(
-                                        color: AppColors.neutral10,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Description",
+                                      style: Theme.of(context).textTheme.headline4?.copyWith(
+                                            color: AppColors.neutral10,
+                                          ),
+                                    ),
+                                    Visibility(
+                                      visible: roleSnapshot.data == "Owner",
+                                      child: SvgPicture.asset(
+                                        VectorImageAssets.ic_edit,
+                                        height: 20,
+                                        width: 20,
+                                        fit: BoxFit.cover,
                                       ),
+                                    )
+                                  ],
                                 ),
-                                const SizedBox(height: 12),
-                                Text(
-                                  (snapshot.data?.description == null || snapshot.data!.description == "")
-                                      ? "..."
-                                      : snapshot.data?.description ?? "...",
-                                  style: Theme.of(context).textTheme.headline5?.copyWith(height: 1.3),
+                                Visibility(
+                                  visible: snapshot.data?.description != null && snapshot.data!.description != "",
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 12),
+                                      Text(
+                                        (snapshot.data?.description == null || snapshot.data!.description == "")
+                                            ? "..."
+                                            : snapshot.data?.description ?? "...",
+                                        style: Theme.of(context).textTheme.headline5?.copyWith(height: 1.3),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -519,11 +576,25 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Picture",
-                                  style: Theme.of(context).textTheme.headline4?.copyWith(
-                                        color: AppColors.neutral10,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Picture",
+                                      style: Theme.of(context).textTheme.headline4?.copyWith(
+                                            color: AppColors.neutral10,
+                                          ),
+                                    ),
+                                    Visibility(
+                                      visible: roleSnapshot.data == "Owner",
+                                      child: SvgPicture.asset(
+                                        VectorImageAssets.ic_edit,
+                                        height: 20,
+                                        width: 20,
+                                        fit: BoxFit.cover,
                                       ),
+                                    )
+                                  ],
                                 ),
                                 const SizedBox(height: 12),
                                 Stack(

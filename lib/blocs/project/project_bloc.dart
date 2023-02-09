@@ -7,7 +7,7 @@ class ProjectBloc extends BaseBloc<ProjectState> {
   final ProjectRepository projectRepository;
   final BoardRepository boardRepository;
   final TaskRepository taskRepository;
-  final ProjectParticipantRepository participantRepository;
+  final ProjectParticipantRepository projectParticipantRepository;
   final UserRepository userRepository;
   final AuthenticationRepository authenticationRepository;
   final InvitationRepository invitationRepository;
@@ -16,7 +16,7 @@ class ProjectBloc extends BaseBloc<ProjectState> {
   ProjectBloc(
     this.projectRepository,
     this.boardRepository,
-    this.participantRepository,
+    this.projectParticipantRepository,
     this.taskRepository,
     this.userRepository,
     this.authenticationRepository,
@@ -41,7 +41,7 @@ class ProjectBloc extends BaseBloc<ProjectState> {
   }
 
   Stream<List<ProjectParticipant>> getListProjectParticipantByProjectIdStream(String projectId) {
-    return participantRepository.getListProjectParticipantByProjectIdStream(projectId);
+    return projectParticipantRepository.getListProjectParticipantByProjectIdStream(projectId);
   }
 
   Stream<List<InvitationModel>> getListInvitationByProjectId(String projectId) {
@@ -73,7 +73,7 @@ class ProjectBloc extends BaseBloc<ProjectState> {
   }
 
   Stream<String> getRole({required String projectId}) {
-    return participantRepository.getRole(userId: authenticationRepository.getCurrentUserId(), projectId: projectId);
+    return projectParticipantRepository.getRole(userId: authenticationRepository.getCurrentUserId(), projectId: projectId);
   }
 
   Future<void> changeImage({required String filePath, required String projectId}) async {
@@ -93,7 +93,7 @@ class ProjectBloc extends BaseBloc<ProjectState> {
   Future<bool> checkInvalidNewUser({required String projectId, required String email}) async {
     String? uid = await userRepository.getUidByEmail(email);
     if (uid != null) {
-      return await participantRepository.checkInvalidNewUser(uid: uid, projectId: projectId);
+      return await projectParticipantRepository.checkInvalidNewUser(uid: uid, projectId: projectId);
     }
     return false;
   }
@@ -131,5 +131,13 @@ class ProjectBloc extends BaseBloc<ProjectState> {
               }
           },
         );
+  }
+
+  Stream<ProjectParticipant> getFavoriteStream({required String projectId}) {
+    return projectParticipantRepository.getFavoriteStream(projectId: projectId, userId: authenticationRepository.getCurrentUserId());
+  }
+
+  void setFavoriteValue({required String id, required bool value}) {
+    projectParticipantRepository.setFavoriteValue(id: id, value: value);
   }
 }
