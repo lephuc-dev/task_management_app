@@ -13,5 +13,7 @@ class RepositoryDependencies {
     injector.registerFactory<CommentRepository>(() => CommentRepository());
     injector.registerFactory<InvitationRepository>(() => InvitationRepository());
     injector.registerFactory<NotificationRepository>(() => NotificationRepository());
+    injector.registerFactory<MeetingRepository>(() => MeetingRepository());
+    injector.registerFactory<MeetingParticipantRepository>(() => MeetingParticipantRepository());
   }
 }

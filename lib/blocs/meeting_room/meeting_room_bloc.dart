@@ -1,43 +1,47 @@
 import '../../base/base.dart';
 import '../../models/models.dart';
 import '../../repositories/repositories.dart';
-import 'meeting.dart';
 
-class MeetingBloc extends BaseBloc<MeetingState> {
+import 'meeting_room.dart';
+
+
+class MeetingRoomBloc extends BaseBloc<MeetingRoomState> {
   final MeetingRepository meetingRepository;
   final MeetingParticipantRepository meetingParticipantRepository;
   final AuthenticationRepository authenticationRepository;
   final ProjectParticipantRepository projectParticipantRepository;
   final ProjectRepository projectRepository;
+  final UserRepository userRepository;
 
-  MeetingBloc(
+  MeetingRoomBloc(
       this.meetingRepository,
       this.meetingParticipantRepository,
       this.authenticationRepository,
       this.projectParticipantRepository,
       this.projectRepository,
-  );
+      this.userRepository,
+      );
 
   void createMeeting({required String name, required String projectId}) {
     String id = DateTime.now().millisecondsSinceEpoch.toString();
     meetingRepository.createMeeting(name: name, id: id, projectId: projectId);
-   // projectParticipantRepository.createProjectParticipant(projectId: id, userId: authenticationRepository.getCurrentUserId(), role: "Owner");
+    // projectParticipantRepository.createProjectParticipant(projectId: id, userId: authenticationRepository.getCurrentUserId(), role: "Owner");
   }
 
   Stream<List<MeetingParticipantModel>> getListMeetingByMyIdStream() {
     return meetingParticipantRepository.getListMeetingParticipantByUidStream(authenticationRepository.getCurrentUserId());
   }
 
-  Stream<List<ProjectParticipant>> getListOwnProjectByMyIdStream() {
-    return projectParticipantRepository.getListOwnProjectParticipantByUidStream(authenticationRepository.getCurrentUserId());
-  }
-
-  Stream<List<ProjectParticipant>> getListProjectByMyIdStream() {
-    return projectParticipantRepository.getListProjectParticipantByUidStream(authenticationRepository.getCurrentUserId());
+  Stream<List<ProjectParticipant>> getListProjectParticipantStream(String projectId) {
+    return projectParticipantRepository.getListProjectParticipantByProjectIdStream(projectId);
   }
 
   Stream<Project> getProjectStream(String projectId) {
     return projectRepository.getProjectStream(projectId);
+  }
+
+  Stream<User> getUserStream(String userId){
+    return userRepository.getInformationUserByIdStream(userId);
   }
 
   Stream<List<MeetingModel>> getListMeetingByMyProjectIdStream(String projectId) {

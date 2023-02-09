@@ -9,3 +9,5 @@ export 'link_model.dart';
 export 'comment_model.dart';
 export 'invitation_model.dart';
 export 'notification_model.dart';
+export 'meeting_model.dart';
+export 'meeting_participant_model.dart';

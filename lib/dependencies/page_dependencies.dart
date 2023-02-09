@@ -31,5 +31,6 @@ class PageDependencies {
     injector.registerFactory<Widget>(() => NotificationTabPage(bloc: injector()), instanceName: Routes.notificationTab);
     injector.registerFactory<Widget>(() => TaskPage(bloc: injector()), instanceName: Routes.task);
     injector.registerFactory<Widget>(() => MeetingPage(bloc: injector()), instanceName: Routes.meeting);
+    injector.registerFactory<Widget>(() => MeetingRoomPage(bloc: injector()), instanceName: Routes.meetingRoom);
   }
 }
