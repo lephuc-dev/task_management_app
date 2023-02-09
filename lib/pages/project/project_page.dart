@@ -220,7 +220,9 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                                             boardId: boardSnapshot.data![index].id ?? "", index: boardSnapshot.data!.length);
                                                       } else if (value == 2) {
                                                         boardNameController.text = boardSnapshot.data![index].name ?? "";
-                                                        showUpdateBoardNameDialog(boardId: boardSnapshot.data![index].id ?? "", projectId: boardSnapshot.data![index].projectId ?? "");
+                                                        showUpdateBoardNameDialog(
+                                                            boardId: boardSnapshot.data![index].id ?? "",
+                                                            projectId: boardSnapshot.data![index].projectId ?? "");
                                                       } else if (value == 3) {
                                                         showDialog(
                                                           context: context,
@@ -431,13 +433,14 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                     builder: (context, favoriteSnapshot) {
                                       return InkWellWrapper(
                                         onTap: () {
-                                          bloc.setFavoriteValue(id: favoriteSnapshot.data?.id ?? "", value: !(favoriteSnapshot.data?.favorite ?? false));
+                                          bloc.setFavoriteValue(
+                                              id: favoriteSnapshot.data?.id ?? "", value: !(favoriteSnapshot.data?.favorite ?? false));
                                         },
                                         margin: const EdgeInsets.only(right: 16),
                                         child: favoriteSnapshot.hasData && favoriteSnapshot.data != null && favoriteSnapshot.data!.favorite == true
                                             ? SvgPicture.asset(
                                                 VectorImageAssets.ic_heart_bold,
-                                          color: AppColors.red60,
+                                                color: AppColors.red60,
                                               )
                                             : SvgPicture.asset(
                                                 VectorImageAssets.ic_heart,
@@ -653,24 +656,67 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                               builder: (context, userSnapshot) {
                                                 if (userSnapshot.hasData) {
                                                   return Slidable(
-                                                    endActionPane: roleSnapshot.data == "Owner"
+                                                    endActionPane: roleSnapshot.data == "Owner" &&
+                                                            userSnapshot.data!.uid != bloc.getUid() &&
+                                                            userSnapshot.data!.uid != ""
                                                         ? ActionPane(
                                                             motion: const ScrollMotion(),
                                                             children: [
                                                               SlidableAction(
-                                                                onPressed: (context) {},
-                                                                backgroundColor: AppColors.yellow60,
+                                                                onPressed: (context) {
+                                                                  showDialog(
+                                                                      context: context,
+                                                                      builder: (context) {
+                                                                        return AlertDialog(
+                                                                          title: Text(
+                                                                            "Delete participant",
+                                                                            style: Theme.of(context).textTheme.headline3,
+                                                                          ),
+                                                                          content: SizedBox(
+                                                                            width: MediaQuery.of(context).size.width,
+                                                                            child: Text(
+                                                                              "Are you sure to delete this participant?",
+                                                                              style: Theme.of(context)
+                                                                                  .textTheme
+                                                                                  .bodyText2
+                                                                                  ?.copyWith(color: AppColors.neutral10),
+                                                                            ),
+                                                                          ),
+                                                                          actions: [
+                                                                            TextButton(
+                                                                              child: Text(
+                                                                                'Cancel',
+                                                                                style: Theme.of(context)
+                                                                                    .textTheme
+                                                                                    .button
+                                                                                    ?.copyWith(color: AppColors.primaryBlack),
+                                                                              ),
+                                                                              onPressed: () {
+                                                                                Navigator.of(context).pop();
+                                                                              },
+                                                                            ),
+                                                                            TextButton(
+                                                                              child: Text(
+                                                                                'Delete',
+                                                                                style: Theme.of(context)
+                                                                                    .textTheme
+                                                                                    .button
+                                                                                    ?.copyWith(color: AppColors.mediumPersianBlue),
+                                                                              ),
+                                                                              onPressed: () {
+                                                                                bloc.deleteProjectParticipant(id: snapshot.data![index].id ?? "");
+                                                                                Navigator.pop(context);
+                                                                                Navigator.pop(context);
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                            ),
+                                                                          ],
+                                                                        );
+                                                                      });
+                                                                },
+                                                                backgroundColor: AppColors.red60,
                                                                 foregroundColor: Colors.white,
-                                                                icon: Icons.edit,
-                                                              ),
-                                                              Visibility(
-                                                                visible: userSnapshot.data!.uid != bloc.getUid() && userSnapshot.data!.uid != "",
-                                                                child: SlidableAction(
-                                                                  onPressed: (context) {},
-                                                                  backgroundColor: AppColors.red60,
-                                                                  foregroundColor: Colors.white,
-                                                                  icon: Icons.delete,
-                                                                ),
+                                                                icon: Icons.delete,
                                                               ),
                                                             ],
                                                           )
@@ -849,7 +895,47 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                             child: InkWellWrapper(
                               paddingChild: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                               border: const Border(top: BorderSide(color: AppColors.neutral99)),
-                              onTap: () {},
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          "Leave project",
+                                          style: Theme.of(context).textTheme.headline3,
+                                        ),
+                                        content: SizedBox(
+                                          width: MediaQuery.of(context).size.width,
+                                          child: Text(
+                                            "Are you sure to leave this project?",
+                                            style: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral10),
+                                          ),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            child: Text(
+                                              'Cancel',
+                                              style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.primaryBlack),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text(
+                                              'Leave',
+                                              style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.mediumPersianBlue),
+                                            ),
+                                            onPressed: () {
+                                              //bloc.deleteProjectParticipant(id: id)
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              },
                               child: Row(
                                 children: [
                                   SvgPicture.asset(
@@ -873,7 +959,48 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                             visible: roleSnapshot.data != "Viewer",
                             child: InkWellWrapper(
                               paddingChild: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                              onTap: () {},
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          "Delete project",
+                                          style: Theme.of(context).textTheme.headline3,
+                                        ),
+                                        content: SizedBox(
+                                          width: MediaQuery.of(context).size.width,
+                                          child: Text(
+                                            "Are you sure to delete this project?",
+                                            style: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral10),
+                                          ),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            child: Text(
+                                              'Cancel',
+                                              style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.primaryBlack),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text(
+                                              'Delete',
+                                              style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.mediumPersianBlue),
+                                            ),
+                                            onPressed: () {
+                                              bloc.deleteProject(projectId: project?.id ?? "");
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              },
                               child: Row(
                                 children: [
                                   SvgPicture.asset(

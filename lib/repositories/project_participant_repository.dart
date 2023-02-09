@@ -79,6 +79,18 @@ class ProjectParticipantRepository {
     _projectParticipantFirestore.doc(id).delete();
   }
 
+  Future<void> deleteListProjectParticipant({required String projectId}) async {
+    List<ProjectParticipant> list = await _projectParticipantFirestore
+        .where("project_id", isEqualTo: projectId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((document) => ProjectParticipant.fromJson(document.data())).toList())
+        .first;
+
+    for (var element in list) {
+      deleteProjectParticipant(id: element.id ?? "");
+    }
+  }
+
   Stream<ProjectParticipant> getFavoriteStream({required String projectId, required String userId}) {
     return _projectParticipantFirestore
         .where("project_id", isEqualTo: projectId)

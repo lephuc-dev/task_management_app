@@ -177,5 +177,6 @@ class ProjectBloc extends BaseBloc<ProjectState> {
 
   void deleteProject({required String projectId}) {
     projectRepository.deleteProject(projectId: projectId);
+    projectParticipantRepository.deleteListProjectParticipant(projectId: projectId);
   }
 }

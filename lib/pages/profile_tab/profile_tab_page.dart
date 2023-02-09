@@ -21,7 +21,7 @@ class _ProfileTabPageState extends BaseState<ProfileTabPage, ProfileTabBloc> {
     return Scaffold(
       backgroundColor: AppColors.primaryWhite,
       appBar: AppBar(
-        elevation: 0,
+        elevation: 0.5,
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.primaryWhite,
         centerTitle: true,
