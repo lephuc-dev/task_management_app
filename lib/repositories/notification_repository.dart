@@ -24,7 +24,7 @@ class NotificationRepository {
           "task_id": taskId,
           "type": type.name,
           "time": id,
-          "isRead": false,
+          "is_read": false,
         })
         .then((value) => debugPrint("completed"))
         .catchError((error) => debugPrint(error.toString()));
@@ -43,6 +43,14 @@ class NotificationRepository {
   Stream<List<NotificationModel>> getListNotificationByUid(String uid) {
     return _notificationFireStore
         .where("receiver_id", isEqualTo: uid)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((document) => NotificationModel.fromJson(document.data())).toList());
+  }
+
+  Stream<List<NotificationModel>> getListNotificationUnReadByUid(String uid) {
+    return _notificationFireStore
+        .where("receiver_id", isEqualTo: uid)
+        .where("is_read", isEqualTo: false)
         .snapshots()
         .map((snapshot) => snapshot.docs.map((document) => NotificationModel.fromJson(document.data())).toList());
   }

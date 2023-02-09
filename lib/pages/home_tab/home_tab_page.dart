@@ -47,22 +47,37 @@ class _HomeTabPageState extends BaseState<HomeTabPage, HomeTabBloc> {
             onPressed: () {
               Navigator.pushNamed(context, Routes.notificationTab);
             },
-            icon: StreamBuilder<Object>(
-                stream: null,
+            icon: StreamBuilder<List<NotificationModel>>(
+                stream: bloc.getMyListNotification(),
                 builder: (context, snapshot) {
-                  return Badge(
-                    badgeContent: Text(
-                      "1",
-                      style: Theme.of(context).textTheme.headline5?.copyWith(fontSize: 12, color: AppColors.primaryWhite),
-                    ),
-                    child: SvgPicture.asset(
-                      VectorImageAssets.ic_notification,
-                      height: 24,
-                      width: 24,
-                      fit: BoxFit.cover,
-                      color: AppColors.primaryWhite,
-                    ),
-                  );
+                  return StreamBuilder<List<InvitationModel>>(
+                      stream: bloc.getMyListInvitation(),
+                      builder: (context, inviteSnapshot) {
+                        int a = (snapshot.data?.length ?? 0) + (inviteSnapshot.data?.length ?? 0);
+                        if (a > 0) {
+                          return Badge(
+                            badgeContent: Text(
+                              a.toString(),
+                              style: Theme.of(context).textTheme.headline5?.copyWith(fontSize: 12, color: AppColors.primaryWhite),
+                            ),
+                            child: SvgPicture.asset(
+                              VectorImageAssets.ic_notification_solid,
+                              height: 24,
+                              width: 24,
+                              fit: BoxFit.cover,
+                              color: AppColors.primaryWhite,
+                            ),
+                          );
+                        } else {
+                          return SvgPicture.asset(
+                            VectorImageAssets.ic_notification_solid,
+                            height: 24,
+                            width: 24,
+                            fit: BoxFit.cover,
+                            color: AppColors.primaryWhite,
+                          );
+                        }
+                      });
                 }),
           )
         ],
@@ -192,16 +207,16 @@ class _HomeTabPageState extends BaseState<HomeTabPage, HomeTabBloc> {
                           Text(
                             "No project",
                             style: Theme.of(context).textTheme.headline1?.copyWith(
-                              color: AppColors.neutral60,
-                              fontSize: 18,
-                            ),
+                                  color: AppColors.neutral60,
+                                  fontSize: 18,
+                                ),
                           ),
                           Text(
                             "Let create project and manage your tasks!",
                             style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.neutral60,
-                            ),
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.neutral60,
+                                ),
                           ),
                         ],
                       ),
@@ -291,8 +306,7 @@ class _HomeTabPageState extends BaseState<HomeTabPage, HomeTabBloc> {
                   decorationConfig: TextFieldDecorationConfig(
                     hintText: "Enter project name",
                     hintStyle: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral60),
-                    errorStyle:
-                    Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.w300, fontSize: 13, color: AppColors.red60),
+                    errorStyle: Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.w300, fontSize: 13, color: AppColors.red60),
                     enabledBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: AppColors.neutral95, width: 1),
                     ),

@@ -8,8 +8,17 @@ class HomeTabBloc extends BaseBloc<HomeTabState> {
   final UserRepository userRepository;
   final ProjectRepository projectRepository;
   final ProjectParticipantRepository projectParticipantRepository;
+  final NotificationRepository notificationRepository;
+  final InvitationRepository invitationRepository;
 
-  HomeTabBloc(this.authenticationRepository, this.userRepository, this.projectRepository, this.projectParticipantRepository);
+  HomeTabBloc(
+    this.authenticationRepository,
+    this.userRepository,
+    this.projectRepository,
+    this.projectParticipantRepository,
+    this.notificationRepository,
+    this.invitationRepository,
+  );
 
   Stream<User> getInformationUserStream() {
     return userRepository.getInformationUserByIdStream(authenticationRepository.getCurrentUserId());
@@ -26,6 +35,15 @@ class HomeTabBloc extends BaseBloc<HomeTabState> {
   Stream<List<ProjectParticipant>> getListFavoriteProjectByMyIdStream() {
     return projectParticipantRepository.getListFavoriteProjectParticipantByUidStream(authenticationRepository.getCurrentUserId());
   }
+
+  Stream<List<NotificationModel>> getMyListNotification() {
+    return notificationRepository.getListNotificationUnReadByUid(authenticationRepository.getCurrentUserId());
+  }
+
+  Stream<List<InvitationModel>> getMyListInvitation() {
+    return invitationRepository.getListInvitationByReceiverId(authenticationRepository.getCurrentUserId());
+  }
+
 
   Stream<Project> getProjectStream(String projectId) {
     return projectRepository.getProjectStream(projectId);
