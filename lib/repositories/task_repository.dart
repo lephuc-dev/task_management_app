@@ -176,4 +176,18 @@ class TaskRepository {
   void deleteTask({required String taskId}) {
     _taskFireStore.doc(taskId).delete();
   }
+
+  Future<List<TaskModel>> deleteListTask({required String boardId}) async {
+    List<TaskModel> list = await _taskFireStore
+        .where("board_id", isEqualTo: boardId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((document) => TaskModel.fromJson(document.data())).toList())
+        .first;
+
+    for (var element in list) {
+      deleteTask(taskId: element.id ?? "");
+    }
+
+    return list;
+  }
 }

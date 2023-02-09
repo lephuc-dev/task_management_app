@@ -11,6 +11,7 @@ class ProjectBloc extends BaseBloc<ProjectState> {
   final UserRepository userRepository;
   final AuthenticationRepository authenticationRepository;
   final InvitationRepository invitationRepository;
+  final TaskParticipantRepository taskParticipantRepository;
 
   ProjectBloc(
     this.projectRepository,
@@ -20,6 +21,7 @@ class ProjectBloc extends BaseBloc<ProjectState> {
     this.userRepository,
     this.authenticationRepository,
     this.invitationRepository,
+    this.taskParticipantRepository,
   );
 
   Stream<List<BoardModel>> getListBoardOrderByIndexStream(String projectId) {
@@ -115,5 +117,19 @@ class ProjectBloc extends BaseBloc<ProjectState> {
 
   void deleteInvitation({required String id}) {
     invitationRepository.deleteInvitation(id);
+  }
+
+  void deleteBoardAndListTask({required String boardId}) {
+    boardRepository.deleteBoard(boardId: boardId);
+    taskRepository.deleteListTask(boardId: boardId).then(
+          (listTask) => {
+            print("list task ::: ${listTask.length}"),
+            for (var element in listTask)
+              {
+                print("task id ::: ${element.id}"),
+                taskParticipantRepository.deleteListParticipant(taskId: element.id ?? ""),
+              }
+          },
+        );
   }
 }

@@ -42,4 +42,8 @@ class BoardRepository {
         .snapshots()
         .map((snapshot) => snapshot.docs.map((document) => BoardModel.fromJson(document.data())).toList());
   }
+
+  void deleteBoard({required String boardId}) {
+    _boardFireStore.doc(boardId).delete();
+  }
 }

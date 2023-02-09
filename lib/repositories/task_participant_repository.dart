@@ -39,7 +39,9 @@ class TaskParticipantRepository {
         .first;
 
     for (var element in list) {
-      deleteTaskParticipant(participantId: element.userId ?? "");
+      deleteTaskParticipant(participantId: element.id ?? "");
     }
+
+    print("delete completed list task participant");
   }
 }

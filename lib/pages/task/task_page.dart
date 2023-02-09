@@ -81,43 +81,70 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
                           actions: [
                             IconButton(
                               onPressed: () {
-                                showDialog(
+                                showModalBottomSheet(
                                     context: context,
                                     builder: (context) {
-                                      return AlertDialog(
-                                        title: Text(
-                                          "Delete",
-                                          style: Theme.of(context).textTheme.headline3,
-                                        ),
-                                        content: SizedBox(
-                                          width: MediaQuery.of(context).size.width,
-                                          child: Text(
-                                            "Are you sure to delete this task?",
-                                            style: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral10),
-                                          ),
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                            child: Text(
-                                              'Cancel',
-                                              style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.primaryBlack),
+                                      return InkWellWrapper(
+                                        onTap: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                    "Delete",
+                                                    style: Theme.of(context).textTheme.headline3,
+                                                  ),
+                                                  content: SizedBox(
+                                                    width: MediaQuery.of(context).size.width,
+                                                    child: Text(
+                                                      "Are you sure to delete this task?",
+                                                      style: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral10),
+                                                    ),
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      child: Text(
+                                                        'Cancel',
+                                                        style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.primaryBlack),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop();
+                                                      },
+                                                    ),
+                                                    TextButton(
+                                                      child: Text(
+                                                        'Delete',
+                                                        style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.mediumPersianBlue),
+                                                      ),
+                                                      onPressed: () {
+                                                        bloc.deleteTaskAndListParticipant(taskId: taskModel.id ?? "");
+                                                        Navigator.pop(context);
+                                                        Navigator.pop(context);
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                        },
+                                        paddingChild: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                                        child: Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              VectorImageAssets.ic_delete,
+                                              height: 24,
+                                              width: 24,
+                                              color: AppColors.red70,
                                             ),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                          TextButton(
-                                            child: Text(
-                                              'Delete',
-                                              style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.mediumPersianBlue),
-                                            ),
-                                            onPressed: () {
-                                              bloc.deleteTaskAndListParticipant(taskId: taskModel.id ?? "");
-                                              Navigator.pop(context);
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ],
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 16.0),
+                                              child: Text(
+                                                "Delete project",
+                                                style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.red70),
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       );
                                     });
                               },
@@ -220,12 +247,18 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(height: 12),
-                                        Text(
-                                          (snapshot.data?.description == null || snapshot.data!.description == "")
-                                              ? "..."
-                                              : snapshot.data?.description ?? "...",
-                                          style: Theme.of(context).textTheme.headline5?.copyWith(height: 1.3),
+                                        Visibility(
+                                          visible: snapshot.data?.description != null && snapshot.data!.description != "",
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(height: 12),
+                                              Text(
+                                                snapshot.data?.description ?? "...",
+                                                style: Theme.of(context).textTheme.headline5?.copyWith(height: 1.3),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -455,32 +488,40 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(height: 12),
-                                        Text(
-                                          () {
-                                            if (snapshot.data!.from != null) {
-                                              return "From:   ${snapshot.data!.from!.day.toString().padLeft(2, '0')}/${snapshot.data!.from!.month.toString().padLeft(2, '0')}/${snapshot.data!.from!.year}  ${snapshot.data!.from!.hour.toString().padLeft(2, '0')}:${snapshot.data!.from!.minute.toString().padLeft(2, '0')}";
-                                            } else {
-                                              return "...";
-                                            }
-                                          }(),
-                                          style: Theme.of(context).textTheme.headline5?.copyWith(height: 1.3),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.symmetric(vertical: 12),
-                                          height: 1,
-                                          width: double.infinity,
-                                          color: AppColors.neutral99,
-                                        ),
-                                        Text(
-                                          () {
-                                            if (snapshot.data!.to != null) {
-                                              return "To:        ${snapshot.data!.to!.day.toString().padLeft(2, '0')}/${snapshot.data!.to!.month.toString().padLeft(2, '0')}/${snapshot.data!.to!.year}  ${snapshot.data!.to!.hour.toString().padLeft(2, '0')}:${snapshot.data!.to!.minute.toString().padLeft(2, '0')}";
-                                            } else {
-                                              return "...";
-                                            }
-                                          }(),
-                                          style: Theme.of(context).textTheme.headline5?.copyWith(height: 1.3),
+                                        Visibility(
+                                          visible: snapshot.data!.from != null && snapshot.data!.to != null,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(height: 12),
+                                              Text(
+                                                () {
+                                                  if (snapshot.data!.from != null) {
+                                                    return "From:   ${snapshot.data!.from!.day.toString().padLeft(2, '0')}/${snapshot.data!.from!.month.toString().padLeft(2, '0')}/${snapshot.data!.from!.year}  ${snapshot.data!.from!.hour.toString().padLeft(2, '0')}:${snapshot.data!.from!.minute.toString().padLeft(2, '0')}";
+                                                  } else {
+                                                    return "...";
+                                                  }
+                                                }(),
+                                                style: Theme.of(context).textTheme.headline5?.copyWith(height: 1.3),
+                                              ),
+                                              Container(
+                                                margin: const EdgeInsets.symmetric(vertical: 12),
+                                                height: 1,
+                                                width: double.infinity,
+                                                color: AppColors.neutral99,
+                                              ),
+                                              Text(
+                                                () {
+                                                  if (snapshot.data!.to != null) {
+                                                    return "To:        ${snapshot.data!.to!.day.toString().padLeft(2, '0')}/${snapshot.data!.to!.month.toString().padLeft(2, '0')}/${snapshot.data!.to!.year}  ${snapshot.data!.to!.hour.toString().padLeft(2, '0')}:${snapshot.data!.to!.minute.toString().padLeft(2, '0')}";
+                                                  } else {
+                                                    return "...";
+                                                  }
+                                                }(),
+                                                style: Theme.of(context).textTheme.headline5?.copyWith(height: 1.3),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),

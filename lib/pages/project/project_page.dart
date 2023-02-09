@@ -221,6 +221,50 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                                       } else if (value == 2) {
                                                         boardNameController.text = boardSnapshot.data![index].name ?? "";
                                                         showUpdateBoardNameDialog(boardId: boardSnapshot.data![index].id ?? "");
+                                                      } else if (value == 3) {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return AlertDialog(
+                                                              title: Text(
+                                                                "Delete",
+                                                                style: Theme.of(context).textTheme.headline3,
+                                                              ),
+                                                              content: SizedBox(
+                                                                width: MediaQuery.of(context).size.width,
+                                                                child: Text(
+                                                                  "Are you sure to delete this board?",
+                                                                  style: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral10),
+                                                                ),
+                                                              ),
+                                                              actions: [
+                                                                TextButton(
+                                                                  child: Text(
+                                                                    'Cancel',
+                                                                    style:
+                                                                        Theme.of(context).textTheme.button?.copyWith(color: AppColors.primaryBlack),
+                                                                  ),
+                                                                  onPressed: () {
+                                                                    Navigator.of(context).pop();
+                                                                  },
+                                                                ),
+                                                                TextButton(
+                                                                  child: Text(
+                                                                    'Delete',
+                                                                    style: Theme.of(context)
+                                                                        .textTheme
+                                                                        .button
+                                                                        ?.copyWith(color: AppColors.mediumPersianBlue),
+                                                                  ),
+                                                                  onPressed: () {
+                                                                    bloc.deleteBoardAndListTask(boardId: boardSnapshot.data![index].id ?? "");
+                                                                    Navigator.of(context).pop();
+                                                                  },
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        );
                                                       }
                                                     },
                                                   ),
