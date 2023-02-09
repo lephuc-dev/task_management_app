@@ -44,6 +44,10 @@ class MeetingRoomBloc extends BaseBloc<MeetingRoomState> {
     return userRepository.getInformationUserByIdStream(userId);
   }
 
+  Stream<User> getCurrentUserStream(){
+    return userRepository.getInformationUserByIdStream(authenticationRepository.getCurrentUserId());
+  }
+
   Stream<List<MeetingModel>> getListMeetingByMyProjectIdStream(String projectId) {
     return meetingRepository.getMeetingByProjectIdStream(projectId);
   }
