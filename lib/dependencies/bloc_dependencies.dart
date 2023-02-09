@@ -8,7 +8,8 @@ class BlocDependencies {
     injector.registerFactory<SignInBloc>(() => SignInBloc(injector()));
     injector.registerFactory<SignUpBloc>(() => SignUpBloc(injector()));
     injector.registerFactory<MainBloc>(() => MainBloc());
-    injector.registerFactory<MeetingBloc>(() => MeetingBloc());
+    injector.registerFactory<MeetingBloc>(() => MeetingBloc(injector(), injector(), injector(), injector(),injector()));
+    injector.registerFactory<MeetingRoomBloc>(() => MeetingRoomBloc(injector(), injector(), injector(), injector(),injector(), injector()));
     injector.registerFactory<ProfileTabBloc>(() => ProfileTabBloc(injector(), injector()));
     injector.registerFactory<ChangeNameBloc>(() => ChangeNameBloc(injector(), injector()));
     injector.registerFactory<ChangePasswordBloc>(() => ChangePasswordBloc(injector(), injector()));

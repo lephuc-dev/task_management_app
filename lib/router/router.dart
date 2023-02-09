@@ -20,6 +20,7 @@ class Routes {
   static String get notificationTab => '/notificationTab';
   static String get task => '/task';
   static String get meeting => '/meeting';
+  static String get meetingRoom => '/meetingRoom';
 
   static getRoute(RouteSettings settings) {
     Widget widget;

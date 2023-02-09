@@ -39,6 +39,7 @@ dependencies:
   firebase_core_platform_interface: ^4.5.2
   firebase_storage: ^11.0.9
   firebase_crashlytics: ^3.0.8
+  get:
 
   # Svg
   flutter_svg: ^1.1.6
@@ -92,6 +93,8 @@ dependencies:
   drag_and_drop_lists: ^0.3.3
 
   badges: ^3.0.2
+  zego_uikit_prebuilt_video_conference: ^2.0.0
+
 
 dev_dependencies:
   flutter_test:

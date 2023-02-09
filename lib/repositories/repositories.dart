@@ -8,3 +8,5 @@ export 'task_participant_repository.dart';
 export 'comment_repository.dart';
 export 'invitation_repository.dart';
 export 'notification_repository.dart';
+export 'meeting_repository.dart';
+export 'meeting_participant_repository.dart';

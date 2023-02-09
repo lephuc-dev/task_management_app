@@ -15,3 +15,5 @@ export 'schedule_tab/schedule_tab.dart';
 export 'notification_tab/notification_tab.dart';
 export 'task/task.dart';
 export 'meeting/meeting.dart';
+export 'meeting_room/meeting_room.dart';
+export 'meeting_room/widgets/call_page.dart';

@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task_management_app/router/router.dart';
@@ -50,7 +50,7 @@ class _HomeTabPageState extends BaseState<HomeTabPage, HomeTabBloc> {
             icon: StreamBuilder<Object>(
                 stream: null,
                 builder: (context, snapshot) {
-                  return Badge(
+                  return badges.Badge(
                     badgeContent: Text(
                       "1",
                       style: Theme.of(context).textTheme.headline5?.copyWith(fontSize: 12, color: AppColors.primaryWhite),
