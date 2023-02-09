@@ -9,6 +9,7 @@ class NotificationTabBloc extends BaseBloc<NotificationTabState> {
   final ProjectRepository projectRepository;
   final InvitationRepository invitationRepository;
   final ProjectParticipantRepository projectParticipantRepository;
+  final NotificationRepository notificationRepository;
 
   NotificationTabBloc(
     this.authenticationRepository,
@@ -16,6 +17,7 @@ class NotificationTabBloc extends BaseBloc<NotificationTabState> {
     this.projectRepository,
     this.invitationRepository,
     this.projectParticipantRepository,
+    this.notificationRepository,
   );
 
   Stream<List<InvitationModel>> getListInvitationByMyId() {
@@ -41,6 +43,10 @@ class NotificationTabBloc extends BaseBloc<NotificationTabState> {
       userId: invitationModel?.receiverId ?? "",
       role: invitationModel?.role ?? "",
     );
+  }
+
+  Stream<List<NotificationModel>> getListNotificationByMyId() {
+    return notificationRepository.getListNotificationByUid(authenticationRepository.getCurrentUserId());
   }
 
   @override

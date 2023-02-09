@@ -58,7 +58,40 @@ class _NotificationTabPageState extends BaseState<NotificationTabPage, Notificat
   }
 
   Widget aboutProjectWidget() {
-    return Container();
+    return StreamBuilder<List<NotificationModel>>(
+      stream: bloc.getListNotificationByMyId(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data!.isNotEmpty) {
+            return Container();
+          } else {
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "No notification",
+                    style: Theme.of(context).textTheme.headline1?.copyWith(
+                      color: AppColors.neutral60,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text(
+                    "You don't have any notification!",
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.neutral60,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        } else {
+          return Container();
+        }
+      }
+    );
   }
 
   Widget invitationWidget() {

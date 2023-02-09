@@ -17,7 +17,7 @@ class BlocDependencies {
     injector.registerFactory<ProjectBloc>(
         () => ProjectBloc(injector(), injector(), injector(), injector(), injector(), injector(), injector(), injector()));
     injector.registerFactory<ScheduleTabBloc>(() => ScheduleTabBloc(injector(), injector(), injector(), injector(), injector()));
-    injector.registerFactory<NotificationTabBloc>(() => NotificationTabBloc(injector(), injector(), injector(), injector(), injector()));
+    injector.registerFactory<NotificationTabBloc>(() => NotificationTabBloc(injector(), injector(), injector(), injector(), injector(), injector()));
     injector.registerFactory<TaskBloc>(() => TaskBloc(injector(), injector(), injector(), injector(), injector(), injector()));
   }
 }
