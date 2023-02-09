@@ -185,8 +185,26 @@ class _HomeTabPageState extends BaseState<HomeTabPage, HomeTabBloc> {
                       ],
                     );
                   } else {
-                    return const Center(
-                      child: Text("No Project"),
+                    return Center(
+                      child: Column(
+                        children: [
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.4),
+                          Text(
+                            "No project",
+                            style: Theme.of(context).textTheme.headline1?.copyWith(
+                              color: AppColors.neutral60,
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            "Let create project and manage your tasks!",
+                            style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.neutral60,
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   }
                 } else {

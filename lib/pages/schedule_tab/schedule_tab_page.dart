@@ -61,7 +61,8 @@ class _ScheduleTabPageState extends BaseState<ScheduleTabPage, ScheduleTabBloc> 
                     stream: bloc.getListTaskParticipantByMyIdStream(),
                     builder: (context, taskParticipantSnapshot) {
                       if (taskParticipantSnapshot.hasData) {
-                        return Column(
+                        if (taskParticipantSnapshot.data!.isNotEmpty) {
+                          return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: List.generate(
                             taskParticipantSnapshot.data!.length,
@@ -135,6 +136,29 @@ class _ScheduleTabPageState extends BaseState<ScheduleTabPage, ScheduleTabBloc> 
                                 }),
                           ),
                         );
+                        } else {
+                          return Center(
+                            child: Column(
+                              children: [
+                                SizedBox(height: MediaQuery.of(context).size.height * 0.3),
+                                Text(
+                                  "No task",
+                                  style: Theme.of(context).textTheme.headline1?.copyWith(
+                                    color: AppColors.neutral60,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                Text(
+                                  "Let join task and complete",
+                                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.neutral60,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
                       } else {
                         return Container();
                       }

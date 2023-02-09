@@ -50,4 +50,11 @@ class InvitationRepository {
         .snapshots()
         .map((snapshot) => snapshot.docs.map((document) => InvitationModel.fromJson(document.data())).toList());
   }
+
+  Stream<List<InvitationModel>> getListInvitationByReceiverId(String receiverId) {
+    return _invitationFireStore
+        .where("receiver_id", isEqualTo: receiverId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((document) => InvitationModel.fromJson(document.data())).toList());
+  }
 }
