@@ -30,4 +30,16 @@ class TaskParticipantRepository {
   void deleteTaskParticipant({required String participantId}) {
     _taskParticipantFirestore.doc(participantId).delete();
   }
+
+  Future<void> deleteListParticipant({required String taskId}) async {
+    List<TaskParticipant> list = await _taskParticipantFirestore
+        .where("task_id", isEqualTo: taskId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((document) => TaskParticipant.fromJson(document.data())).toList())
+        .first;
+
+    for (var element in list) {
+      deleteTaskParticipant(participantId: element.userId ?? "");
+    }
+  }
 }

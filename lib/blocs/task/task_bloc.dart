@@ -172,6 +172,11 @@ class TaskBloc extends BaseBloc<TaskState> {
     return authenticationRepository.getCurrentUserId();
   }
 
+  void deleteTaskAndListParticipant({required String taskId}) {
+    taskRepository.deleteTask(taskId: taskId);
+    taskParticipantRepository.deleteListParticipant(taskId: taskId);
+  }
+
   @override
   void dispose() {
     super.dispose();
