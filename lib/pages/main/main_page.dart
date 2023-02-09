@@ -34,14 +34,14 @@ class _MainPageState extends BaseState<MainPage, MainBloc> {
   final bottomBarIcons = [
     VectorImageAssets.ic_home,
     VectorImageAssets.ic_schedule,
-    VectorImageAssets.ic_notification,
+    VectorImageAssets.ic_meeting,
     VectorImageAssets.ic_user,
   ];
 
   final bottomBarActiveIcons = [
     VectorImageAssets.ic_home_solid,
     VectorImageAssets.ic_schedule_solid,
-    VectorImageAssets.ic_notification_solid,
+    VectorImageAssets.ic_meeting_solid,
     VectorImageAssets.ic_user_solid,
   ];
 
