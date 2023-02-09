@@ -19,6 +19,7 @@ class Routes {
   static String get scheduleTab => '/scheduleTab';
   static String get notificationTab => '/notificationTab';
   static String get task => '/task';
+  static String get meeting => '/meeting';
 
   static getRoute(RouteSettings settings) {
     Widget widget;
@@ -31,8 +32,7 @@ class Routes {
           child: Builder(
             builder: (context) {
               return const Padding(
-                padding:
-                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
+                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
                 child: Text(
                   '404 NOT FOUND',
                   textAlign: TextAlign.center,

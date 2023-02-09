@@ -13,6 +13,7 @@ class MainPage extends StatefulWidget {
   final ProfileTabBloc profileTabBloc;
   final ScheduleTabBloc scheduleTabBloc;
   final NotificationTabBloc notificationTabBloc;
+  final MeetingBloc meetingBloc;
   const MainPage({
     Key? key,
     required this.bloc,
@@ -20,6 +21,7 @@ class MainPage extends StatefulWidget {
     required this.profileTabBloc,
     required this.scheduleTabBloc,
     required this.notificationTabBloc,
+    required this.meetingBloc,
   }) : super(key: key);
 
   @override
@@ -32,28 +34,28 @@ class _MainPageState extends BaseState<MainPage, MainBloc> {
   final bottomBarIcons = [
     VectorImageAssets.ic_home,
     VectorImageAssets.ic_schedule,
-    //VectorImageAssets.ic_notification,
+    VectorImageAssets.ic_notification,
     VectorImageAssets.ic_user,
   ];
 
   final bottomBarActiveIcons = [
     VectorImageAssets.ic_home_solid,
     VectorImageAssets.ic_schedule_solid,
-    //VectorImageAssets.ic_notification_solid,
+    VectorImageAssets.ic_notification_solid,
     VectorImageAssets.ic_user_solid,
   ];
 
   final List<String> bottomBarTitles = [
     "Home",
     "Schedule",
-    //"Notification",
+    "Meeting",
     "Profile",
   ];
 
   late List<Widget> tabScreens = [
     HomeTabPage(bloc: widget.homeTabBloc),
     ScheduleTabPage(bloc: widget.scheduleTabBloc),
-    //NotificationTabPage(bloc: widget.notificationTabBloc),
+    MeetingPage(bloc: widget.meetingBloc),
     ProfileTabPage(bloc: widget.profileTabBloc),
   ];
 

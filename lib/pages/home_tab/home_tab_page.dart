@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:task_management_app/router/router.dart';
 import '../../base/base.dart';
 import '../../blocs/blocs.dart';
 import '../../models/models.dart';
@@ -43,7 +44,9 @@ class _HomeTabPageState extends BaseState<HomeTabPage, HomeTabBloc> {
         iconTheme: const IconThemeData(color: AppColors.primaryWhite),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, Routes.notificationTab);
+            },
             icon: StreamBuilder<Object>(
                 stream: null,
                 builder: (context, snapshot) {

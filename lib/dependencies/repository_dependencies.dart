@@ -12,5 +12,6 @@ class RepositoryDependencies {
     injector.registerFactory<TaskParticipantRepository>(() => TaskParticipantRepository());
     injector.registerFactory<CommentRepository>(() => CommentRepository());
     injector.registerFactory<InvitationRepository>(() => InvitationRepository());
+    injector.registerFactory<NotificationRepository>(() => NotificationRepository());
   }
 }

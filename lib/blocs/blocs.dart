@@ -12,3 +12,4 @@ export 'project/project.dart';
 export 'schedule_tab/schedule_tab.dart';
 export 'notification_tab/notification_tab.dart';
 export 'task/task.dart';
+export 'meeting/meeting.dart';
