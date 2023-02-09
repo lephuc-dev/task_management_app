@@ -66,7 +66,6 @@ class _MeetingPageState extends BaseState<MeetingPage, MeetingBloc> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            titleWidget(title: "Your Project"),
             StreamBuilder<List<ProjectParticipant>>(
               stream: widget.bloc.getListProjectByMyIdStream(),
               builder: (context, snapshot){
@@ -85,25 +84,30 @@ class _MeetingPageState extends BaseState<MeetingPage, MeetingBloc> {
                                   builder: (context, projectSnapshot) {
                                     if (projectSnapshot.hasData) {
                                       return Container(
-                                        child: StreamBuilder<List<MeetingModel>>(
-                                          stream: widget.bloc.getListMeetingByMyProjectIdStream(projectSnapshot.data!.id.toString()),
-                                          builder: (context, meetingsnapshot) {
-                                            if(meetingsnapshot.hasData){
-                                              return ListView.builder(
-                                                shrinkWrap: true,
-                                                  itemCount: meetingsnapshot.data!.length,
-                                                  physics: const NeverScrollableScrollPhysics(),
-                                                  itemBuilder: (BuildContext context, int index){
-                                                    print("oke");
-                                                    return MeetingItem(meeting: meetingsnapshot.data![index]);
-                                                  }
-                                              );
-                                            }
-                                            else
-                                            {
-                                              return Container();
-                                            }
-                                          }
+                                        child: Column(
+                                          children: [
+                                            titleWidget(title: projectSnapshot.data!.name.toString()),
+                                            StreamBuilder<List<MeetingModel>>(
+                                              stream: widget.bloc.getListMeetingByMyProjectIdStream(projectSnapshot.data!.id.toString()),
+                                              builder: (context, meetingsnapshot) {
+                                                if(meetingsnapshot.hasData){
+                                                  return ListView.builder(
+                                                    shrinkWrap: true,
+                                                      itemCount: meetingsnapshot.data!.length,
+                                                      physics: const NeverScrollableScrollPhysics(),
+                                                      itemBuilder: (BuildContext context, int index){
+                                                        print("oke");
+                                                        return MeetingItem(meeting: meetingsnapshot.data![index]);
+                                                      }
+                                                  );
+                                                }
+                                                else
+                                                {
+                                                  return Container();
+                                                }
+                                              }
+                                            ),
+                                          ],
                                         ),
                                       );
                                     } else {
