@@ -79,81 +79,84 @@ class _TaskPageState extends BaseState<TaskPage, TaskBloc> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           actions: [
-                            IconButton(
-                              onPressed: () {
-                                showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) {
-                                      return InkWellWrapper(
-                                        onTap: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                    "Delete",
-                                                    style: Theme.of(context).textTheme.headline3,
-                                                  ),
-                                                  content: SizedBox(
-                                                    width: MediaQuery.of(context).size.width,
-                                                    child: Text(
-                                                      "Are you sure to delete this task?",
-                                                      style: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral10),
+                            Visibility(
+                              visible: roleSnapshot.data != "Viewer",
+                              child: IconButton(
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                        return InkWellWrapper(
+                                          onTap: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                      "Delete",
+                                                      style: Theme.of(context).textTheme.headline3,
                                                     ),
-                                                  ),
-                                                  actions: [
-                                                    TextButton(
+                                                    content: SizedBox(
+                                                      width: MediaQuery.of(context).size.width,
                                                       child: Text(
-                                                        'Cancel',
-                                                        style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.primaryBlack),
+                                                        "Are you sure to delete this task?",
+                                                        style: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral10),
                                                       ),
-                                                      onPressed: () {
-                                                        Navigator.of(context).pop();
-                                                      },
                                                     ),
-                                                    TextButton(
-                                                      child: Text(
-                                                        'Delete',
-                                                        style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.mediumPersianBlue),
+                                                    actions: [
+                                                      TextButton(
+                                                        child: Text(
+                                                          'Cancel',
+                                                          style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.primaryBlack),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop();
+                                                        },
                                                       ),
-                                                      onPressed: () {
-                                                        bloc.deleteTaskAndListParticipant(taskId: taskModel.id ?? "");
-                                                        Navigator.pop(context);
-                                                        Navigator.pop(context);
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              });
-                                        },
-                                        paddingChild: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                                        child: Row(
-                                          children: [
-                                            SvgPicture.asset(
-                                              VectorImageAssets.ic_delete,
-                                              height: 24,
-                                              width: 24,
-                                              color: AppColors.red70,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(left: 16.0),
-                                              child: Text(
-                                                "Delete project",
-                                                style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.red70),
+                                                      TextButton(
+                                                        child: Text(
+                                                          'Delete',
+                                                          style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.mediumPersianBlue),
+                                                        ),
+                                                        onPressed: () {
+                                                          bloc.deleteTaskAndListParticipant(taskId: taskModel.id ?? "");
+                                                          Navigator.pop(context);
+                                                          Navigator.pop(context);
+                                                          Navigator.pop(context);
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                });
+                                          },
+                                          paddingChild: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                                          child: Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                VectorImageAssets.ic_delete,
+                                                height: 24,
+                                                width: 24,
+                                                color: AppColors.red70,
                                               ),
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    });
-                              },
-                              icon: SvgPicture.asset(
-                                VectorImageAssets.ic_more,
-                                height: 24,
-                                width: 24,
-                                fit: BoxFit.cover,
-                                color: AppColors.primaryWhite,
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 16.0),
+                                                child: Text(
+                                                  "Delete project",
+                                                  style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.red70),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      });
+                                },
+                                icon: SvgPicture.asset(
+                                  VectorImageAssets.ic_more,
+                                  height: 24,
+                                  width: 24,
+                                  fit: BoxFit.cover,
+                                  color: AppColors.primaryWhite,
+                                ),
                               ),
                             )
                           ],

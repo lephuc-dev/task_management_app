@@ -706,8 +706,6 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                                                               onPressed: () {
                                                                                 bloc.deleteProjectParticipant(id: snapshot.data![index].id ?? "");
                                                                                 Navigator.pop(context);
-                                                                                Navigator.pop(context);
-                                                                                Navigator.pop(context);
                                                                               },
                                                                             ),
                                                                           ],
@@ -894,7 +892,7 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                             visible: roleSnapshot.data != "Owner",
                             child: InkWellWrapper(
                               paddingChild: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                              border: const Border(top: BorderSide(color: AppColors.neutral99)),
+                              //border: const Border(top: BorderSide(color: AppColors.neutral99)),
                               onTap: () {
                                 showDialog(
                                     context: context,
@@ -928,8 +926,8 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                                             ),
                                             onPressed: () {
                                               //bloc.deleteProjectParticipant(id: id)
-                                              Navigator.pop(context);
-                                              Navigator.pop(context);
+                                              //Navigator.pop(context);
+                                              //Navigator.pop(context);
                                             },
                                           ),
                                         ],
@@ -1499,8 +1497,64 @@ class _ProjectPageState extends BaseState<ProjectPage, ProjectBloc> {
                           .whenComplete(() => Navigator.pop(context));
                     } else {
                       if (checkNewUser == false) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text(
+                                  "Fail",
+                                  style: Theme.of(context).textTheme.headline3,
+                                ),
+                                content: SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Text(
+                                    "User can't be found",
+                                    style: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral10),
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    child: Text(
+                                      'Close',
+                                      style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.mediumPersianBlue),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            });
                         print("message ::: Không tìm thấy người này");
                       } else {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text(
+                                  "Fail",
+                                  style: Theme.of(context).textTheme.headline3,
+                                ),
+                                content: SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Text(
+                                    "Waiting for user accept invitation to this project",
+                                    style: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.neutral10),
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    child: Text(
+                                      'Close',
+                                      style: Theme.of(context).textTheme.button?.copyWith(color: AppColors.mediumPersianBlue),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            });
                         print("message ::: Người này đang được mời");
                       }
                     }

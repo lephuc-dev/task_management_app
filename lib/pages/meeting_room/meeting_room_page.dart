@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:task_management_app/base/base.dart';
-import 'package:task_management_app/blocs/blocs.dart';
-import 'package:task_management_app/models/models.dart';
-import 'package:task_management_app/pages/meeting/widgets/meeting_item.dart';
-
-
+import '../../base/base.dart';
+import '../../blocs/blocs.dart';
+import '../../models/models.dart';
+import '../meeting/widgets/meeting_item.dart';
 import '../../resources/resources.dart';
 import '../../widgets/widgets.dart';
 import 'widgets/call_page.dart';
